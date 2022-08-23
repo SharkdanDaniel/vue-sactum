@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
-use App\Http\Requests\UpdateProductRequest;
+use App\Models\Product;
 
 class ProductController extends Controller
 {
@@ -15,7 +14,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json(Product::get());
     }
 
     /**
@@ -26,7 +25,13 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        //
+        $input = $request->validated();
+        $product = Product::create([
+            'name' => $input['name'],
+            'price' => $input['price'],
+            'description' => $input['description'] ?? null,
+        ]);
+        return response()->json($product);
     }
 
     /**
@@ -37,7 +42,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        //
+        return response()->json($product);
     }
 
     /**
@@ -47,9 +52,14 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateProductRequest $request, Product $product)
+    public function update(StoreProductRequest $request, Product $product)
     {
-        //
+        $input = $request->validated();
+        $product->name = $input['name'];
+        $product->price = $input['price'];
+        $product->description = $input['description'] ?? null;
+        $product->save();
+        return response()->json($product);
     }
 
     /**
@@ -60,6 +70,7 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        $product->delete();
+        return response()->json(['message' => 'Product deleted successfully']);
     }
 }

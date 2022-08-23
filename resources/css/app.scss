@@ -1,4 +1,7 @@
 html, body, #app {
     margin: 0;
+    height: calc(100% - 14px);
     box-sizing: border-box;
+    font-family: 'Roboto', Arial, Helvetica, sans-serif;
+    background-color: rgb(211, 216, 221);
 }

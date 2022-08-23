@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreProductRequest extends FormRequest
+class UpdateUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,9 @@ class StoreProductRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'string|max:50|required',
-            'price' => 'numeric|required',
-            'description' => 'string|nullable|max:200',
+            'name' => 'string|max:50|nullable',
+            'email' => 'email|max:20|nullable|unique:users',
+            'password' => 'string|min:8|max:20|nullable',
         ];
     }
 
@@ -41,10 +41,14 @@ class StoreProductRequest extends FormRequest
             'name.required' => 'Obrigatório',
             'name.string' => 'Deve ser texto',
             'name.max' => 'Máximo 50 caracteres',
-            'price.numeric' => 'Deve ser número',
-            'price.required' => 'Obrigatório',
-            'description.string' => 'Deve ser texto',
-            'description.max' => 'Máximo 200 caracteres',
+            'email.email' => 'Email inválido',
+            'email.string' => 'Deve ser texto',
+            'email.required' => 'Obrigatório',
+            'email.unique' => 'Este email já existe',
+            'name.max' => 'Máximo 20 caracteres',
+            'password.string' => 'Deve ser texto',
+            'password.max' => 'Máximo 20 caracteres',
+            'password.min' => 'Mínimo 8 caracteres',
         ];
     }
 }

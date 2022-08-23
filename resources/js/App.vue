@@ -1,5 +1,5 @@
 <template>
-    <nav>
+    <!-- <nav>
         <ul>
             <li>
                 <router-link to="/">Home</router-link>
@@ -8,6 +8,16 @@
                 <router-link to="/login">Login</router-link>
             </li>
         </ul>
-    </nav>
+    </nav> -->
     <router-view></router-view>
 </template>
+
+<script lang="ts">
+import { defineComponent } from 'vue';
+
+export default defineComponent({
+    setup() {
+        
+    },
+})
+</script>
