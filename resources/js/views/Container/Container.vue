@@ -30,7 +30,7 @@
           <q-list padding>
             <q-item clickable v-ripple>
               <q-item-section>
-                <router-link active-class="active" to="/">Home</router-link>
+                <router-link active-class="active" to="/home">Home</router-link>
               </q-item-section>
             </q-item>
 
@@ -99,7 +99,8 @@ export default defineComponent({
 
 <style lang="scss">
 .active {
-    color: $info;
+    color: $primary;
+    font-weight: 700;
 }
 .mini-slot {
   transition: background-color 0.28s;

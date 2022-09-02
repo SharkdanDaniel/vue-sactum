@@ -5,10 +5,12 @@
             <div class="relative-position">
                 <LoadingContainer :loading="loading" />
                 <div class="row q-mb-lg">
-                    <q-btn outline color="primary" class="col-12 col-md-3 q-mb-md">
-                        <q-icon left size="xs" name="fa-solid fa-plus" />
-                        <div>Adicionar</div>
-                    </q-btn>
+                    <router-link to="users/create">
+                        <q-btn outline color="primary" class="col-12 col-md-3 q-mb-md">
+                            <q-icon left size="xs" name="fa-solid fa-plus" />
+                            <div>Adicionar</div>
+                        </q-btn>
+                    </router-link>
                     <q-input 
                         dense
                         :loading="loadingSearch"
@@ -54,6 +56,7 @@ import {
     PaginatorProps,
 } from "../../../../models/Table.model";
 import { GetResponseProps } from "../../../../models/GetResponse.model";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
     name: "UserList",
@@ -63,6 +66,7 @@ export default defineComponent({
     },
     setup() {
         const $q = useQuasar();
+        const $router = useRouter();
         const users = ref<GetResponseProps<UserProps>>();
         const loading = ref(false);
         const loadingSearch = ref(false);
@@ -149,6 +153,7 @@ export default defineComponent({
                     deleteDialog(e.element);
                     break;
                 case 'edit':
+                    $router.push(`users/${e.element.id}`);
                     break;
                 default:
                     break;

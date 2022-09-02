@@ -12,12 +12,26 @@
             <q-card-section>
                 <q-form @submit.prevent="onSubmit">
                     <div class="q-mb-md">
-                        <q-input ref="inputRef" type="email" v-model="form.email" label="Email" outlined
-                            :rules="[val => getErrorMessage(v$.form.email) ]" />
+                        <q-input 
+                            ref="inputRef" 
+                            type="email" 
+                            v-model="form.email" 
+                            label="Email" 
+                            outlined
+                            :rules="[() => getErrorMessage(v$.form.email) ]" 
+                            dense 
+                        />
                     </div>
                     <div class="q-mb-md">
-                        <q-input ref="inputRef" type="password" v-model="form.password" label="Senha" outlined
-                            :rules="[val => getErrorMessage(v$.form.password) ]" />
+                        <q-input 
+                            ref="inputRef" 
+                            type="password" 
+                            v-model="form.password" 
+                            label="Senha" 
+                            outlined
+                            :rules="[() => getErrorMessage(v$.form.password) ]" 
+                            dense 
+                        />
                     </div>
 
                     <q-card-actions class="">

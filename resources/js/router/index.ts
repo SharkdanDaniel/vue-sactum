@@ -10,6 +10,7 @@ const Login = () => import('../views/Login.vue');
 const Container = () => import('../views/Container/Container.vue');
 const Home = () => import('../views/Container/pages/Home.vue');
 const UserList = () => import('../views/Container/pages/Users/UserList.vue');
+const UserForm = () => import('../views/Container/pages/Users/UserForm.vue');
 const ProductList = () => import('../views/Container/pages/Products/ProductList.vue');
 
 const routes: RouteRecordRaw[] = [
@@ -24,11 +25,14 @@ const routes: RouteRecordRaw[] = [
         component: Container,
         beforeEnter: [authGuard],
         children: [
-            { path: '', component: Home, name: 'Home' },
+            { path: 'home', component: Home, name: 'Home' },
             { path: 'users', component: UserList, name: 'Usuários' },
+            { path: 'users/create', component: UserForm, name: 'Adicionar Usuário' },
+            { path: 'users/:id', component: UserForm, name: 'Atualizar Usuário' },
             { path: 'products', component: ProductList, name: 'Produtos' },
         ]
     },
+    { path: '', redirect: 'home' }
 ]
 
 const router = createRouter({

@@ -5,6 +5,14 @@ html, body, #app {
     font-family: 'Roboto', Arial, Helvetica, sans-serif;
 }
 
+a {
+    text-decoration: none;
+}
+
+.custom-btn {
+    min-width: 130px;
+}
+
 .container {
     max-width: 100%;
     margin: 0 auto;
