@@ -6,6 +6,7 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -14,9 +15,15 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::where('email', '<>', 'admin@admin.com')->get();
+        $users = User::where('email', '<>', 'admin@admin.com')
+            ->where(function ($query) use ($request) {
+                $query->where('name', 'like', '%' . str_replace(' ', '%', $request->input(key:'search')) . '%')
+                    ->orWhere('email', 'like', '%' . str_replace(' ', '%', $request->input(key:'search')) . '%');
+            })
+            ->orderBy($request->input(key:'orderBy'), $request->input(key:'sort'))
+            ->paginate($request->input(key:'per_page'));
         return response()->json($users);
     }
 
@@ -65,9 +72,18 @@ class UserController extends Controller
 
         $user = User::where('email', '<>', 'admin@admin.com')->find($id);
         if ($user->exists()) {
-            if(array_key_exists('name', $input)) $user->name = $input['name'];
-            if(array_key_exists('email', $input)) $user->email = $input['email'];
-            if(array_key_exists('password', $input)) $user->password = $input['password'];
+            if (array_key_exists('name', $input)) {
+                $user->name = $input['name'];
+            }
+
+            if (array_key_exists('email', $input)) {
+                $user->email = $input['email'];
+            }
+
+            if (array_key_exists('password', $input)) {
+                $user->password = $input['password'];
+            }
+
             $user->save();
             return response()->json($user);
         }
@@ -80,8 +96,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
+        
         $user = User::where([['id', $id], ['email', '<>', 'admin@admin.com']]);
         if (!$user->exists()) {
             return response()->json(['User not found'], 404);
@@ -90,5 +107,22 @@ class UserController extends Controller
         if ($result) {
             return response()->json(['message' => 'User deleted successfully']);
         }
+    }
+
+    /**
+     * Remove multiple resources from storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function destroyAll(Request $request)
+    {
+        $users = $request->all();
+        DB::transaction(function () use ($users) {
+            foreach ($users as $user) {
+                User::where([['id', $user['id']], ['email', '<>', 'admin@admin.com']])->delete();
+            }
+        });
+        return response()->json(['message' => 'Users deleted successfully']);        
     }
 }

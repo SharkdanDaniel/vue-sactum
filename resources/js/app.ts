@@ -1,7 +1,7 @@
 import './bootstrap';
 
 import { createApp } from '@vue/runtime-dom';
-import { Quasar, Notify, QNotifyCreateOptions } from 'quasar';
+import { Quasar, Notify, Dialog, QNotifyCreateOptions } from 'quasar';
 import quasarIconSet from 'quasar/icon-set/fontawesome-v6';
 
 // Import icon libraries
@@ -24,7 +24,7 @@ const notifyConfig: QNotifyCreateOptions = {
 createApp(app)
     .use(router)
     .use(Quasar, {
-        plugins: { Notify },
+        plugins: { Notify, Dialog },
         config: { notify: notifyConfig },
         iconSet: quasarIconSet
     })

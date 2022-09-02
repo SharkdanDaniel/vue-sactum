@@ -1,13 +1,5 @@
 import api from "../api";
-
-export type AuthResponseProps = {
-    access_token: string,
-    token_type: string,
-    user: {
-        name: string,
-        email: string
-    }
-}
+import { AuthResponseProps } from "../models/Auth.model";
 
 export const onLogin = (form: any) => {
     return api.post<AuthResponseProps>('login', form, { headers: { 'SkipToken': true } });
@@ -21,9 +13,16 @@ export const setAuth = (auth: AuthResponseProps): void => {
     localStorage.setItem('vue-auth', JSON.stringify(auth));
 }
 
-export const getToken = (): string | undefined => {
-    const auth = JSON.parse(localStorage?.getItem('vue-auth') || '');
-    return auth?.access_token;
+export const getAuthUser = () => {
+    return api.get('/');
+}
+
+export const getToken = (): string | null => {
+    try {
+        return JSON.parse(localStorage?.getItem('vue-auth') as string)?.access_token;
+    } catch (error) {
+        return null;
+    }
 }
 
 export const removeAuth = (): void => {

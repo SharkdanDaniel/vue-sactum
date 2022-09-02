@@ -21,6 +21,8 @@ Route::post('login', [AuthController::class, 'login']);
 Route::post('logout', [AuthController::class, 'logout']);
 
 Route::middleware('auth:sanctum')->group(function () {
+    //users
+    Route::patch('users/delete', [UserController::class, 'destroyAll']);
     Route::apiResources([
         // users
         'users' => UserController::class,

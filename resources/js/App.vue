@@ -1,14 +1,4 @@
 <template>
-    <!-- <nav>
-        <ul>
-            <li>
-                <router-link to="/">Home</router-link>
-            </li>
-            <li>
-                <router-link to="/login">Login</router-link>
-            </li>
-        </ul>
-    </nav> -->
     <router-view></router-view>
 </template>
 
@@ -16,8 +6,12 @@
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-    setup() {
-        
-    },
+    setup() {},
 })
 </script>
+
+<style lang="scss">
+    body {
+        background-color: $grey-2;
+    }
+</style>

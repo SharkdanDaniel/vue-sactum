@@ -1,6 +1,6 @@
 <template>
     <div>
-        Home
+        Products
     </div>
 </template>
 
@@ -8,7 +8,7 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-    name: 'HomeView'
+    name: 'ProductList'
 })
 </script>
 
