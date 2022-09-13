@@ -33,6 +33,25 @@
                 />
             </div>
         </template>
+        <template v-slot:item="props">
+            <q-card class="full-width shadow-10 mb-4 pb-5" :class="props.selected ? 'bg-grey-2' : ''">
+                <template v-if="hasCheckbox || hasIndex">
+                    <q-card-section>
+                        <q-checkbox v-if="hasCheckbox" dense v-model="props.selected" class="mr-4" />
+                        <q-label class="font-bold" v-if="hasIndex">{{ props.rowIndex + 1 }}</q-label>
+                    </q-card-section>
+                    <q-separator />
+                </template>                
+                <q-list>
+                    <q-item v-for="col in props.cols.filter((col) => col.name !== 'actions' && col.name !== 'index')" :key="col.name">
+                        <q-item-section>
+                            <q-item-label>{{ col.label }}</q-item-label>
+                            <q-item-label caption>{{ col.value }}</q-item-label>
+                        </q-item-section>                        
+                    </q-item>
+                </q-list>
+            </q-card>
+        </template>
         <template v-slot:body-cell-index="props" v-if="hasIndex">
             <q-td :props="props">{{ props.rowIndex + 1 }}</q-td>
         </template>
@@ -60,7 +79,7 @@
 </template>
 
 <script lang="ts">
-import { computed, reactive } from "@vue/reactivity";
+import { computed } from "@vue/reactivity";
 import { QTableProps, useQuasar } from "quasar";
 import { defineComponent, PropType, ref } from "vue";
 import { PaginatorProps, TableAction, TableColumns } from "../models/Table.model";
@@ -104,7 +123,7 @@ export default defineComponent({
         const pagination = ref<PaginatorProps>({
             descending: false,
             page: 1,
-            rowsPerPage: 10,
+            rowsPerPage: 5,
             rowsNumber: props.total
         })
         return {
@@ -120,7 +139,7 @@ export default defineComponent({
 </script>
 
 
-<style lang="scss" scoped>
+<style lang="scss">
     .w-10 {
         width: 10%;
     }

@@ -1,12 +1,14 @@
 import api from "../api";
 import { AuthResponseProps } from "../models/Auth.model";
+import { UserProps } from "../models/User.model";
+import router from "../router";
 
 export const onLogin = (form: any) => {
     return api.post<AuthResponseProps>('login', form, { headers: { 'SkipToken': true } });
 }
 
 export const onLogout = () => {
-    return api.post('logout');
+    return api.post('logout').then(() => removeAuth());
 }
 
 export const setAuth = (auth: AuthResponseProps): void => {
@@ -14,7 +16,7 @@ export const setAuth = (auth: AuthResponseProps): void => {
 }
 
 export const getAuthUser = () => {
-    return api.get('/');
+    return api.get<UserProps>('auth/user');
 }
 
 export const getToken = (): string | null => {
@@ -26,5 +28,6 @@ export const getToken = (): string | null => {
 }
 
 export const removeAuth = (): void => {
-    return localStorage.removeItem('vue-auth');
+    localStorage.removeItem('vue-auth');
+    router.push({ name: 'Login'});
 }

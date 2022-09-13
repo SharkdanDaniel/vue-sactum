@@ -100,7 +100,7 @@ export default defineComponent({
         const pagination = ref<PaginatorProps>({
             descending: false,
             page: 1,
-            rowsPerPage: 10,
+            rowsPerPage: 5,
             rowsNumber: 0,
         });
         const loadUsers = async (

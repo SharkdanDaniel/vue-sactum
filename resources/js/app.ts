@@ -26,6 +26,7 @@ createApp(app)
     .use(Quasar, {
         plugins: { Notify, Dialog },
         config: { notify: notifyConfig },
-        iconSet: quasarIconSet
+        iconSet: quasarIconSet,
+        animations: 'all'
     })
     .mount('#app')
