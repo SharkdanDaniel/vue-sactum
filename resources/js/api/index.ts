@@ -1,9 +1,10 @@
 import axios from 'axios';
+import { env } from 'process';
 import { Notify } from 'quasar';
 import router from '../router/index';
 import { getToken, removeAuth } from '../services/authService';
 
-const api = axios.create({ baseURL: 'http://127.0.0.1:8000/api' })
+const api = axios.create({ baseURL: env.APP_API })
 
 api.interceptors.request.use(
     (config: any) => {
