@@ -12,6 +12,7 @@ const Home = () => import('../views/Container/pages/Home.vue');
 const UserList = () => import('../views/Container/pages/Users/UserList.vue');
 const UserForm = () => import('../views/Container/pages/Users/UserForm.vue');
 const ProductList = () => import('../views/Container/pages/Products/ProductList.vue');
+const ProductForm = () => import('../views/Container/pages/Products/ProductForm.vue');
 
 const routes: RouteRecordRaw[] = [
     {
@@ -30,6 +31,8 @@ const routes: RouteRecordRaw[] = [
             { path: 'users/create', component: UserForm, name: 'Adicionar Usuário' },
             { path: 'users/:id', component: UserForm, name: 'Atualizar Usuário' },
             { path: 'products', component: ProductList, name: 'Produtos' },
+            { path: 'products/create', component: ProductForm, name: 'Adicionar Produto' },
+            { path: 'products/:id', component: ProductForm, name: 'Atualizar Produto' },
         ]
     },
     { path: '', redirect: 'home' }

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreProductRequest;
 use App\Models\Product;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -12,9 +14,16 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json(Product::get());
+        $products = Product::where(function ($query) use ($request) {
+            $query->where('name', 'like', '%' . str_replace(' ', '%', $request->input(key:'search')) . '%')
+                ->orWhere('price', 'like', '%' . str_replace(' ', '%', $request->input(key:'search')) . '%')
+                ->orWhere('description', 'like', '%' . str_replace(' ', '%', $request->input(key:'search')) . '%');
+        })
+            ->orderBy($request->input(key:'orderBy'), $request->input(key:'sort'))
+            ->paginate($request->input(key:'per_page'));
+        return response()->json($products);
     }
 
     /**
@@ -72,5 +81,22 @@ class ProductController extends Controller
     {
         $product->delete();
         return response()->json(['message' => 'Product deleted successfully']);
+    }
+
+    /**
+     * Remove multiple resources from storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function destroyAll(Request $request)
+    {
+        $products = $request->all();
+        DB::transaction(function () use ($products) {
+            foreach ($products as $product) {
+                Product::where('id', $product['id'])->delete();
+            }
+        });
+        return response()->json(['message' => 'Products deleted successfully']);
     }
 }

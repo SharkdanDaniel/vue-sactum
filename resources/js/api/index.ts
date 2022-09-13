@@ -14,7 +14,11 @@ api.interceptors.request.use(
             if (token) config.headers['Authorization'] = 'Bearer ' + token;
         }
         return config;
-    },
+    }
+)
+
+api.interceptors.response.use(
+    (res) => res,
     (err) => {
         if (err.response?.status === 401) removeAuth();
         Notify.create(
@@ -25,7 +29,7 @@ api.interceptors.request.use(
             });
         router.push({ name: 'Login' })
         return Promise.reject(err);
-    }
+    },
 )
 
 export default api;

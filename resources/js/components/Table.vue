@@ -56,7 +56,7 @@
             <q-td :props="props">{{ props.rowIndex + 1 }}</q-td>
         </template>
         <template v-slot:body-cell="props">
-            <q-td :props="props" v-if="props.row.isInnerHtml" v-html="props.row.field" />
+            <q-td :props="props" v-if="props.col.isInnerHtml" v-html="props.value" />
             <q-td :props="props" v-else :class="props.col.class">
                 {{ props.value }}
             </q-td>

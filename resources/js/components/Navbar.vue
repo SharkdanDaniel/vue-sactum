@@ -39,16 +39,10 @@ export default defineComponent({
         const getAuth = async() => {
             try {
                 profile.value = (await getAuthUser())?.data;
-            } catch (error) {
-                
-            }
+            } finally {}
         }
         const logout = async() => {
-            try {
-                await onLogout();
-            } catch (error) {
-                
-            }
+            await onLogout();
         }
         const isDark = ref($q.dark.isActive);
         const darkToggle = () => $q.dark.toggle();

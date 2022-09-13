@@ -89,8 +89,6 @@ export default defineComponent({
                 const { data } = await onLogin(form.value);
                 setAuth(data);
                 $router.push('/');
-            } catch (error: any) {
-                console.error(error)
             } finally {
                 loading.value = false;
             }

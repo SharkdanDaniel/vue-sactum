@@ -119,7 +119,6 @@ export default defineComponent({
                 }
                 if(search) loadingSearch.value = true;
                 users.value = (await getUsers(e, search))?.data;
-            } catch (error) {
             } finally {
                 switch (loadingType) {
                     case 'paginationLoading':
@@ -142,7 +141,6 @@ export default defineComponent({
                     message: `Usuario${count} excluído${count} com sucesso!`,
                 })
                 loadUsers(pagination.value);
-            } catch (error) {
             } finally {
                 loading.value = false;
             }

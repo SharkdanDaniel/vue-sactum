@@ -24,6 +24,8 @@ Route::middleware('auth:sanctum')->group(function () {
     //users
     Route::patch('users/delete', [UserController::class, 'destroyAll']);
     Route::get('auth/user', [AuthController::class, 'authUser']);
+    //products
+    Route::patch('products/delete', [ProductController::class, 'destroyAll']);
     Route::apiResources([
         // users
         'users' => UserController::class,

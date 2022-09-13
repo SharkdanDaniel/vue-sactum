@@ -1,5 +1,5 @@
 <template>
-    <div class="text-h4 q-pb-md">{{ isEditing ? 'Editar' : 'Adicionar' }} usuário</div>
+    <div class="text-h4 q-pb-md">{{ isEditing ? 'Editar' : 'Adicionar' }} produto</div>
     <q-card class="q-pa-sm shadow-10">
         <q-card-section v-if="loading">
             <q-skeleton type="QInput" height="2.4rem" class="mb-10" />
@@ -14,8 +14,6 @@
             <q-form @submit.prevent="onSubmit">
                 <div class="mb-5">
                     <q-input 
-                        ref="inputRef" 
-                        type="text" 
                         v-model="form.name" 
                         label="Nome" 
                         dense 
@@ -24,28 +22,51 @@
                     />
                 </div>
                 <div class="mb-5">
-                    <q-input 
-                        ref="inputRef" type="email" 
-                        v-model="form.email" 
-                        label="Email" 
+                    <!-- <q-field
+                        v-model="form.price"
+                        label="Preço"
+                        type="text"
+                        dense
+                        outlined
+                        :rules="[() => getErrorMessage(v$.form.price)]"
+                    >
+                        <template v-slot:control="{ id, floatingLabel, modelValue, emitValue }">
+                            <input
+                                :ref="inputRef"
+                                :id="id"
+                                class="q-field__input"
+                                :value="modelValue"
+                                @change="e => emitValue(e?.target?.value)"
+                                v-show="floatingLabel" 
+                            />
+                        </template>
+                    </q-field> -->
+                    <!-- <CurrencyInput 
+                        v-model="form.price"
+                        label="Preço"
+                        :rules="[() => getErrorMessage(v$.form.price)]"
+                    /> -->
+                    <q-input
+                        :ref="inputRef"
+                        v-model="form.price"
+                        type="number"
+                        label="Preço"
                         dense 
                         outlined
-                        :rules="[() => getErrorMessage(v$.form.email)]"
+                        :rules="[() => getErrorMessage(v$.form.price)]"
                     />
                 </div>
                 <div class="mb-5">
                     <q-input 
-                        ref="inputRef" 
-                        type="password" 
-                        v-model="form.password" 
-                        label="Senha" 
+                        v-model="form.description" 
+                        label="Descrição" 
                         dense 
                         outlined
-                        :rules="[() => getErrorMessage(v$.form.password)]" 
+                        :rules="[() => getErrorMessage(v$.form.description)]" 
                     />
                 </div>
                 <q-card-actions style="gap: 10px" :class="$q.screen.lt.sm ? 'column' : 'justify-end'">
-                    <router-link to="../users" :class="{ 'full-width': $q.screen.lt.sm }">
+                    <router-link to="../products" :class="{ 'full-width': $q.screen.lt.sm }">
                         <q-btn 
                             :disable="submitLoading" 
                             type="button" 
@@ -73,54 +94,58 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { emailMsg, requiredMsg, getErrorMessage, minLengthMsg, maxLengthlMsg } from "../../../../helpers/custom-errors";
+import { requiredMsg, getErrorMessage, maxLengthlMsg } from "../../../../helpers/custom-errors";
 import useVuelidate from "@vuelidate/core";
-import { createUser, getUserById, updateUser } from "../../../../services/userService";
+import { createProduct, getProductById, updateProduct } from "../../../../services/productService";
 import { useQuasar } from "quasar";
-import { UserProps } from "../../../../models/User.model";
+import { ProductProps } from "../../../../models/Product.model";
+import { useCurrencyInput } from "vue-currency-input";
+import CurrencyInput from "../../../../components/CurrencyInput.vue";
+
 
 export default defineComponent({
-    name: "UserFormView",
+    name: "ProductFormView",
+    components: { CurrencyInput },
     mounted() {
         if (this.$route?.params?.id) {
             this.isEditing = true;
-            this.loadUser(String(this.$route.params.id));
+            this.loadProduct(String(this.$route.params.id));
         }
     },
     setup() {
         const $route = useRoute();
         const $router = useRouter();
+        const { inputRef } = useCurrencyInput({ currency: 'BRL' });
+        const moneyFormatForComponent = ref({
+            decimal: ',',
+            thousands: '.',
+            prefix: 'R$ ',
+            suffix: ' #',
+            precision: 2,
+            masked: true
+        })
         const $q = useQuasar();
         const submitLoading = ref(false);
         const loading = ref(false);
         const isEditing = ref(false);
-        const form = ref<UserProps>({
+        const form = ref<ProductProps>({
             name: '',
-            email: '',
-            password: ''
+            price: null!,
+            description: ''
         });
         const rules = computed(() => ({
             form: {
                 name: { required: requiredMsg(), maxLength: maxLengthlMsg(100) },
-                email: {
-                    required: requiredMsg(),
-                    email: emailMsg(),
-                    maxLength: maxLengthlMsg(50),
-                },
-                password: { required: requiredMsg(), maxLength: maxLengthlMsg(20), minLength: minLengthMsg(8) },
+                price: { required: requiredMsg() },
+                description: { required: requiredMsg(), maxLength: maxLengthlMsg(100) },
             }
         }))
         const v$ = useVuelidate(rules, { form });
-        const loadUser = async (id: string) => {
+        const loadProduct = async (id: string) => {
             try {
                 loading.value = true
-                form.value = (await getUserById(id))?.data;
+                form.value = (await getProductById(id))?.data;
                 v$.value.form.$reset();
-                setTimeout(() => {
-                    console.log(v$.value.$commit)
-                }, 2000);
-            } catch (error) {
-                throw error;
             } finally {
                 loading.value = false
             }
@@ -128,9 +153,11 @@ export default defineComponent({
         const onSubmit = async () => {
             try {
                 submitLoading.value = true;
-                isEditing.value ? await updateUser(form.value) : await createUser(form.value);
-                $router.push('../users');
-                $q.notify({ color: 'positive', message: `Usuário ${isEditing.value ? 'atualizado' : 'adicionado'} com sucesso!` })
+                // const result = { ...form.value };
+                // result.price = Number(result.price?.toString()?.replace(',', '.'));
+                isEditing.value ? await updateProduct(form.value) : await createProduct(form.value);
+                $router.push('../products');
+                $q.notify({ color: 'positive', message: `Producto ${isEditing.value ? 'atualizado' : 'adicionado'} com sucesso!` })
             } finally {
                 submitLoading.value = false;
             }
@@ -142,8 +169,10 @@ export default defineComponent({
             submitLoading,
             loading,
             $route,
+            inputRef,
             isEditing,
-            loadUser,
+            loadProduct,
+            moneyFormatForComponent,
             getErrorMessage
         };
     },
