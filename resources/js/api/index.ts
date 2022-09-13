@@ -1,10 +1,11 @@
 import axios from 'axios';
-import { env } from 'process';
 import { Notify } from 'quasar';
 import router from '../router/index';
 import { getToken, removeAuth } from '../services/authService';
 
-const api = axios.create({ baseURL: env.APP_API })
+const baseAPI = (import.meta as any).env.VITE_API_URL;
+
+const api = axios.create({ baseURL: baseAPI })
 
 api.interceptors.request.use(
     (config: any) => {
