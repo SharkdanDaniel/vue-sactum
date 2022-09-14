@@ -10,12 +10,12 @@
         :mini="!drawer || miniState"
         @click.capture="drawerClick"
         :width="200"
-        :breakpoint="500"
+        :breakpoint="600"
         bordered
-        class="bg-grey-6"
+        class="bg-grey-5"
       >
         <template v-slot:mini>
-          <q-scroll-area class="fit mini-slot cursor-pointer">
+          <q-scroll-area class="fit mini-slot cursor-pointer" :class="{ 'bg-blue-grey-9' : $q.dark.isActive }">
             <div class="q-py-lg">
               <div class="column items-center">
                 <q-icon name="fa-solid fa-house" class="mini-icon" />
@@ -26,7 +26,7 @@
           </q-scroll-area>
         </template>
 
-        <q-scroll-area class="fit">
+        <q-scroll-area class="fit" :class="{ 'bg-blue-grey-9' : $q.dark.isActive }">
           <q-list padding>
             <q-item clickable v-ripple>
               <q-item-section>

@@ -1,5 +1,5 @@
 <template>
-    <q-header elevated>
+    <q-header elevated :class="{ 'bg-blue-grey-10' : $q.dark.isActive }">
         <q-toolbar>
             <q-btn flat @click="buttonClicked" round dense icon="fa-solid fa-bars" />
             <q-toggle v-model="isDark" icon="fa-solid fa-moon" @click="darkToggle" />

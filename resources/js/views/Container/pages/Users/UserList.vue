@@ -1,18 +1,19 @@
 <template>
-    <div class="text-h4 q-pb-md">Usuários</div>
-    <q-card class="q-pa-sm shadow-10">
-        <q-card-section>
+    <div class="text-h4 q-pb-md" :class="{ 'text-center' : $q.screen.lt.sm }">Usuários</div>
+    <div :class="{ 'q-card q-pa-sm shadow-10' : $q.screen.gt.xs, 'bg-dark' : $q.screen.gt.xs && $q.dark.isActive }">
+        <div :class="{ 'q-card__section q-card__section--vert' : $q.screen.gt.xs }">
             <div class="relative-position">
                 <LoadingContainer :loading="loading" />
                 <div class="row q-mb-lg">
-                    <router-link to="users/create">
-                        <q-btn outline color="primary" class="col-12 col-md-3 q-mb-md">
+                    <router-link to="users/create" class="col-12 col-md-3 q-mb-md">
+                        <q-btn :outline="$q.screen.gt.xs" color="primary" class="full-width">
                             <q-icon left size="xs" name="fa-solid fa-plus" />
                             <div>Adicionar</div>
                         </q-btn>
                     </router-link>
                     <q-input 
                         dense
+                        type="search"
                         :loading="loadingSearch"
                         class="col-12 col-md-4 offset-md-5"
                         @update:modelValue="handleSearch"
@@ -39,8 +40,8 @@
                     :loading="paginationLoading" 
                 />
             </div>
-        </q-card-section>
-    </q-card>
+        </div>
+    </div>
 </template>
 
 <script lang="ts">
@@ -93,7 +94,7 @@ export default defineComponent({
             {
                 icon: "fa-solid fa-pen-to-square",
                 eventName: "edit",
-                color: "secondary",
+                color: "info",
             },
             { icon: "fa-solid fa-trash", eventName: "delete", color: "warning" },
         ]);

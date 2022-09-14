@@ -35,10 +35,12 @@
         </template>
         <template v-slot:item="props">
             <q-card class="full-width shadow-10 mb-4 pb-5" :class="props.selected ? 'bg-grey-2' : ''">
-                <template v-if="hasCheckbox || hasIndex">
-                    <q-card-section>
-                        <q-checkbox v-if="hasCheckbox" dense v-model="props.selected" class="mr-4" />
-                        <q-label class="font-bold" v-if="hasIndex">{{ props.rowIndex + 1 }}</q-label>
+                <template v-if="hasCheckbox || hasIndex || actions.length">
+                    <q-card-section class="row justify-between">
+                        <div>
+                            <q-checkbox v-if="hasCheckbox" dense v-model="props.selected" class="mr-4" />
+                            <q-label class="font-bold" v-if="hasIndex">{{ props.rowIndex + 1 }}</q-label>
+                        </div>
                     </q-card-section>
                     <q-separator />
                 </template>                
@@ -50,6 +52,17 @@
                         </q-item-section>                        
                     </q-item>
                 </q-list>
+                <div class="row justify-center">
+                    <q-btn
+                        v-for="action in actions" :key="action.icon"
+                        class="q-mr-sm q-pa-sm" 
+                        size="xs" 
+                        :color="action.color" 
+                        :class="action.class" 
+                        :icon="action.icon"
+                        @click="$emit('onClickedEvent', { element: props.row, event: action.eventName })" 
+                    />
+                </div>
             </q-card>
         </template>
         <template v-slot:body-cell-index="props" v-if="hasIndex">
