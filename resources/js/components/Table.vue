@@ -34,7 +34,13 @@
             </div>
         </template>
         <template v-slot:item="props">
-            <q-card class="full-width shadow-10 mb-4 pb-5" :class="props.selected ? 'bg-grey-2' : ''">
+            <q-card 
+                class="full-width shadow-10 mb-4 pb-5" 
+                :class="{ 
+                    'bg-blue-grey-2' : props.selected && !$q.dark.isActive, 
+                    'bg-blue-grey-9' : props.selected && $q.dark.isActive
+                }"
+            >
                 <template v-if="hasCheckbox || hasIndex || actions.length">
                     <q-card-section class="row justify-between">
                         <div>
