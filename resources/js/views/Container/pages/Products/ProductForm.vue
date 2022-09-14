@@ -1,6 +1,6 @@
 <template>
     <div class="text-h4 q-pb-md" :class="{ 'text-center' : $q.screen.lt.sm }">{{ isEditing ? 'Editar' : 'Adicionar' }} produto</div>
-    <div :class="{ 'q-card q-pa-sm shadow-10' : $q.screen.gt.xs }">
+    <div :class="{ 'q-card q-pa-sm shadow-10' : $q.screen.gt.xs, 'bg-dark' : $q.screen.gt.xs && $q.dark.isActive }">
         <q-card-section v-if="loading">
             <q-skeleton type="QInput" height="2.4rem" class="mb-10" />
             <q-skeleton type="QInput" height="2.4rem" class="mb-10" />

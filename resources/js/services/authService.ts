@@ -12,7 +12,7 @@ export const onLogout = () => {
 }
 
 export const setAuth = (auth: AuthResponseProps): void => {
-    localStorage.setItem('vue-auth', JSON.stringify(auth));
+    localStorage.setItem('laravue@auth', JSON.stringify(auth));
 }
 
 export const getAuthUser = () => {
@@ -21,13 +21,13 @@ export const getAuthUser = () => {
 
 export const getToken = (): string | null => {
     try {
-        return JSON.parse(localStorage?.getItem('vue-auth') as string)?.access_token;
+        return JSON.parse(localStorage?.getItem('laravue@auth') as string)?.access_token;
     } catch (error) {
         return null;
     }
 }
 
 export const removeAuth = (): void => {
-    localStorage.removeItem('vue-auth');
+    localStorage.removeItem('laravue@auth');
     router.push({ name: 'Login'});
 }

@@ -9,8 +9,14 @@ import { useQuasar } from 'quasar'
 export default defineComponent({
     setup() {
         const $q = useQuasar();
-
+        let theme: 'dark' | 'light' = localStorage.getItem('laravue@theme') as any;
+        if(!theme) {
+            theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            localStorage.setItem('laravue@theme', theme);
+        }
+        $q.dark.set(theme === 'dark' ? true : false);
         watch(() => $q.dark.isActive, val => {
+            localStorage.setItem('laravue@theme', val ? 'dark' : 'light');
         })
     },
 })

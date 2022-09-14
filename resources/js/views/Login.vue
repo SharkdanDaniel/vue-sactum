@@ -1,6 +1,7 @@
 <template>
-    <div class="row justify-center items-center full-height">
-        <div class="login-card" :class="{ 'q-card q-pa-md shadow-10 q-card--bordered' : $q.screen.gt.xs }">
+    <DarkToggle />
+    <div class="row justify-center items-center full-height position-relative">
+        <div class="login-card" :class="{ 'q-card q-pa-md shadow-10 q-card--bordered' : $q.screen.gt.xs, 'bg-dark' : $q.screen.gt.xs && $q.dark.isActive }">
             <q-card-section>
                 <div class="row items-center no-wrap q-pa-md">
                     <div class="col">
@@ -50,6 +51,7 @@ import { requiredMsg, emailMsg, getErrorMessage } from '../helpers/custom-errors
 import { useQuasar } from 'quasar';
 import { useRouter } from 'vue-router';
 import useVuelidate from '@vuelidate/core'
+import DarkToggle from '../components/DarkToggle.vue';
 
 type FormProps = {
     email: string;
@@ -57,55 +59,55 @@ type FormProps = {
 }
 
 export default defineComponent({
-    name: 'LoginView',
+    name: "LoginView",
+    components: { DarkToggle },
     setup() {
         const $q = useQuasar();
         const $router = useRouter();
-
         const loading = ref(false);
-
         const form = ref<FormProps>({
-            email: '',
-            password: ''
+            email: "",
+            password: ""
         });
-
         const rules = computed(() => ({
             form: {
-                email: { 
-                    required: requiredMsg(), 
+                email: {
+                    required: requiredMsg(),
                     email: emailMsg(),
                     $anyDirty: false
                 },
                 password: { required: requiredMsg() },
             }
-        }))
-
+        }));
         const v$ = useVuelidate(rules, { form });
-
         const onSubmit = async () => {
             try {
                 loading.value = true;
                 const { data } = await onLogin(form.value);
                 setAuth(data);
-                $router.push('/');
-            } finally {
+                $router.push("/");
+            }
+            finally {
                 loading.value = false;
             }
-        }
-
+        };
         return {
             form,
             v$,
             onSubmit,
             loading,
             getErrorMessage
-        }
-    }
+        };
+    },
 })
 </script>
 
 <style lang="scss" scoped>
 .login-card {
-    width: 500px;
+    width: 100%;
+    max-width: 500px;
+}
+.q-toggle {
+    position: absolute;
 }
 </style>

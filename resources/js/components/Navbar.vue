@@ -2,7 +2,7 @@
     <q-header elevated :class="{ 'bg-blue-grey-10' : $q.dark.isActive }">
         <q-toolbar>
             <q-btn flat @click="buttonClicked" round dense icon="fa-solid fa-bars" />
-            <q-toggle v-model="isDark" icon="fa-solid fa-moon" @click="darkToggle" />
+            <DarkToggle />
             <q-toolbar-title>{{ routerName }}</q-toolbar-title>
             <q-avatar class="cursor-pointer">
                 <img src="https://cdn.quasar.dev/img/avatar.png">
@@ -23,39 +23,37 @@
 </template>
 
 <script lang="ts">
-import { useQuasar } from 'quasar';
 import { computed, defineComponent, ref } from 'vue'
 import { useRoute } from 'vue-router';
 import { UserProps } from '../models/User.model';
 import { getAuthUser, onLogout } from '../services/authService';
+import DarkToggle from './DarkToggle.vue';
 
 export default defineComponent({
-    name: 'NavbarComponent',
-    emits: ['onMenuClicked'],
-    methods: { buttonClicked(e: Event) { this.$emit('onMenuClicked', e) } },
+    name: "NavbarComponent",
+    components: { DarkToggle },
+    emits: ["onMenuClicked"],
+    methods: { buttonClicked(e: Event) { this.$emit("onMenuClicked", e); } },
     setup() {
-        const $q = useQuasar();
         const profile = ref<UserProps>();
-        const getAuth = async() => {
+        const getAuth = async () => {
             try {
                 profile.value = (await getAuthUser())?.data;
-            } finally {}
-        }
-        const logout = async() => {
+            }
+            finally { }
+        };
+        const logout = async () => {
             await onLogout();
-        }
-        const isDark = ref($q.dark.isActive);
-        const darkToggle = () => $q.dark.toggle();
+        };
         const $route = useRoute();
         getAuth();
         return {
-            darkToggle,
-            isDark,
             profile,
             logout,
             routerName: computed(() => $route.name),
-        }
+        };
     },
+    
 })
 </script>
 
