@@ -1,6 +1,6 @@
 <template>
-    <div class="text-h4 q-pb-md">{{ isEditing ? 'Editar' : 'Adicionar' }} produto</div>
-    <q-card class="q-pa-sm shadow-10">
+    <div class="text-h4 q-pb-md" :class="{ 'text-center' : $q.screen.lt.sm }">{{ isEditing ? 'Editar' : 'Adicionar' }} produto</div>
+    <div :class="{ 'q-card q-pa-sm shadow-10' : $q.screen.gt.xs }">
         <q-card-section v-if="loading">
             <q-skeleton type="QInput" height="2.4rem" class="mb-10" />
             <q-skeleton type="QInput" height="2.4rem" class="mb-10" />
@@ -65,14 +65,14 @@
                         :rules="[() => getErrorMessage(v$.form.description)]" 
                     />
                 </div>
-                <q-card-actions style="gap: 10px" :class="$q.screen.lt.sm ? 'column' : 'justify-end'">
+                <q-card-actions class="q-pa-none" style="gap: 10px" :class="$q.screen.lt.sm ? 'column' : 'justify-end'">
                     <router-link to="../products" :class="{ 'full-width': $q.screen.lt.sm }">
                         <q-btn 
                             :disable="submitLoading" 
                             type="button" 
                             size="md" 
-                            text-color="grey-10" 
-                            color="grey-1"
+                            :text-color="$q.dark.isActive ? 'white' : 'grey-10'"
+                            :color="$q.dark.isActive ? 'secondary' : 'grey-1'"
                             class="custom-btn" 
                             :class="{ 'full-width': $q.screen.lt.sm }"
                         >Voltar</q-btn>
@@ -88,7 +88,7 @@
                 </q-card-actions>
             </q-form>
         </q-card-section>
-    </q-card>
+    </div>
 </template>
 
 <script lang="ts">
@@ -157,7 +157,12 @@ export default defineComponent({
                 // result.price = Number(result.price?.toString()?.replace(',', '.'));
                 isEditing.value ? await updateProduct(form.value) : await createProduct(form.value);
                 $router.push('../products');
-                $q.notify({ color: 'positive', message: `Producto ${isEditing.value ? 'atualizado' : 'adicionado'} com sucesso!` })
+                $q.notify({ 
+                    color: 'positive', 
+                    message: `Producto ${isEditing.value ? 'atualizado' : 'adicionado'} com sucesso!`,
+                    position: window.innerWidth <= 600 ? 'top' : 'top-right',
+                    classes: window.innerWidth <= 600 ? 'full-width' : '',
+                })
             } finally {
                 submitLoading.value = false;
             }

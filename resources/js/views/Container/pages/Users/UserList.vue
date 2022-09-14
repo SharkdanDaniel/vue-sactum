@@ -140,6 +140,8 @@ export default defineComponent({
                 $q.notify({
                     type: 'positive',
                     message: `Usuario${count} excluído${count} com sucesso!`,
+                    position: window.innerWidth <= 600 ? 'top' : 'top-right',
+                    classes: window.innerWidth <= 600 ? 'full-width' : '',
                 })
                 loadUsers(pagination.value);
             } finally {
@@ -173,13 +175,14 @@ export default defineComponent({
                 message: `Tem certeza que deseja excluir ${count} usuario${count > 1 ? "s" : ""}?`,
                 cancel: {
                     label: 'Cancelar',
-                    color: 'grey-3',
-                    textColor: 'grey-10'
+                    textColor: $q.dark.isActive ? 'white' : 'grey-10',
+                    color: $q.dark.isActive ? 'secondary' : 'grey-3',
                 },
                 ok: {
                     label: 'Confirmar',
                     color: 'negative'
                 },
+                class: 'pb-2 px-1'
             }).onOk(() => handleDeleteUser(data));
         };
         return {

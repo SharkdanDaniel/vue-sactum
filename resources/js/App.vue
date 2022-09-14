@@ -3,15 +3,21 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, watch } from 'vue';
+import { useQuasar } from 'quasar'
 
 export default defineComponent({
-    setup() {},
+    setup() {
+        const $q = useQuasar();
+
+        watch(() => $q.dark.isActive, val => {
+        })
+    },
 })
 </script>
 
 <style lang="scss">
-    body {
-        background-color: $grey-2;
-    }
+body {
+    background-color: $grey-2;
+}
 </style>

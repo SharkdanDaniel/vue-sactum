@@ -24,6 +24,8 @@ api.interceptors.response.use(
         Notify.create(
             {
                 type: 'negative',
+                position: window.innerWidth <= 600 ? 'top' : 'top-right',
+                classes: window.innerWidth <= 600 ? 'full-width' : '',
                 message: err?.response?.data?.message || 'Erro ao realizar requisição!',
                 caption: err?.response?.status ? `Status: ${err?.response?.status}` : undefined
             });

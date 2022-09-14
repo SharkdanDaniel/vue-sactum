@@ -148,6 +148,8 @@ export default defineComponent({
                 $q.notify({
                     type: 'positive',
                     message: `Produto${count} excluído${count} com sucesso!`,
+                    position: window.innerWidth <= 600 ? 'top' : 'top-right',
+                    classes: window.innerWidth <= 600 ? 'full-width' : '',
                 })
                 loadProducts(pagination.value);
             } finally {
@@ -181,8 +183,8 @@ export default defineComponent({
                 message: `Tem certeza que deseja excluir ${count} produto${count > 1 ? "s" : ""}?`,
                 cancel: {
                     label: 'Cancelar',
-                    color: 'grey-3',
-                    textColor: 'grey-10'
+                    textColor: $q.dark.isActive ? 'white' : 'grey-10',
+                    color: $q.dark.isActive ? 'secondary' : 'grey-3',
                 },
                 ok: {
                     label: 'Confirmar',

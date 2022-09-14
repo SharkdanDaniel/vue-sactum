@@ -15,7 +15,6 @@ import app from './App.vue';
 import router from './router';
 
 const notifyConfig: QNotifyCreateOptions = {
-    position: 'top-right',
     timeout: 10000,
     progress: true,
     actions: [{ icon: 'fa-solid fa-xmark', color: 'white', handler: () => { } }]

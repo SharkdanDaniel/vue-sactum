@@ -1,6 +1,6 @@
 <template>
     <div class="row justify-center items-center full-height">
-        <q-card bordered class="login-card q-pa-md shadow-10">
+        <div class="login-card" :class="{ 'q-card q-pa-md shadow-10 q-card--bordered' : $q.screen.gt.xs }">
             <q-card-section>
                 <div class="row items-center no-wrap q-pa-md">
                     <div class="col">
@@ -34,13 +34,12 @@
                         />
                     </div>
 
-                    <q-card-actions class="">
-                        <q-btn :loading="loading" type="submit" size="lg" color="primary" class="full-width">ENTRAR
-                        </q-btn>
+                    <q-card-actions class="q-pa-none">
+                        <q-btn :loading="loading" type="submit" size="lg" color="primary" class="full-width">ENTRAR</q-btn>
                     </q-card-actions>
                 </q-form>
             </q-card-section>
-        </q-card>
+        </div>
     </div>
 </template>
 
