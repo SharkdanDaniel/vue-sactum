@@ -13,13 +13,309 @@
         "version": "1.0.0"
     },
     "paths": {
+        "/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Login",
+                "operationId": "login",
+                "requestBody": {
+                    "description": "Login object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Logged in successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoginResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/logout": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Logout",
+                "operationId": "logout",
+                "responses": {
+                    "200": {
+                        "description": "Logged off successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/user": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Auth user",
+                "operationId": "authUser",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/products": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Get product list",
+                "operationId": "listProduct",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Current page",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Number of the data per page",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "order_by",
+                        "in": "query",
+                        "description": "Field to be ordered",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Asc or Desc",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Filter the data",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProductList"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Create a product",
+                "operationId": "createProduct",
+                "requestBody": {
+                    "description": "Create product object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreProductRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Product created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Product"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/products/{productId}": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Get a product",
+                "operationId": "getProduct",
+                "parameters": [
+                    {
+                        "name": "productId",
+                        "in": "path",
+                        "description": "Product id to be showned",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Product"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Update a product",
+                "operationId": "updateProduct",
+                "parameters": [
+                    {
+                        "name": "productId",
+                        "in": "path",
+                        "description": "Product id to be updated",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Update product object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Product"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Product updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Product"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Delete a product",
+                "operationId": "deleteProduct",
+                "parameters": [
+                    {
+                        "name": "productId",
+                        "in": "path",
+                        "description": "Product id to be deleted",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Product deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/products/delete": {
+            "patch": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Delete multiples products",
+                "operationId": "deleteAllProducts",
+                "responses": {
+                    "200": {
+                        "description": "Products deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/users": {
             "get": {
                 "tags": [
                     "Users"
                 ],
                 "summary": "Get user list",
-                "operationId": "index",
+                "operationId": "listUser",
                 "parameters": [
                     {
                         "name": "page",
@@ -85,14 +381,14 @@
                     "Users"
                 ],
                 "summary": "Create a user",
-                "operationId": "store",
+                "operationId": "saveUser",
                 "requestBody": {
                     "description": "Create user object",
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/User"
+                                "$ref": "#/components/schemas/StoreUserRequest"
                             }
                         }
                     }
@@ -112,12 +408,42 @@
             }
         },
         "/users/{userId}": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get a user",
+                "operationId": "getUser",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "description": "User id to be showned",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
             "put": {
                 "tags": [
                     "Users"
                 ],
                 "summary": "Update a user",
-                "operationId": "update",
+                "operationId": "updateUser",
                 "parameters": [
                     {
                         "name": "userId",
@@ -130,7 +456,7 @@
                     }
                 ],
                 "requestBody": {
-                    "description": "Create user object",
+                    "description": "Update user object",
                     "required": true,
                     "content": {
                         "application/json": {
@@ -142,7 +468,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "User created successfully",
+                        "description": "Product updated successfully",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -158,12 +484,12 @@
                     "Users"
                 ],
                 "summary": "Delete a user",
-                "operationId": "destroy",
+                "operationId": "deleteUser",
                 "parameters": [
                     {
                         "name": "userId",
                         "in": "path",
-                        "description": "User id to be updated",
+                        "description": "User id to be deleted",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -190,7 +516,7 @@
                     "Users"
                 ],
                 "summary": "Delete multiples users",
-                "operationId": "destroyAll",
+                "operationId": "deleteAllUsers",
                 "responses": {
                     "200": {
                         "description": "Users deleted successfully",
@@ -208,53 +534,123 @@
     },
     "components": {
         "schemas": {
+            "LoginRequest": {
+                "title": "Login",
+                "description": "Login request",
+                "properties": {
+                    "email": {
+                        "description": "Autentication email",
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "password": {
+                        "description": "Autentication password",
+                        "type": "string",
+                        "format": "password"
+                    }
+                },
+                "type": "object"
+            },
+            "StoreProductRequest": {
+                "title": "Product",
+                "description": "Crud product",
+                "properties": {
+                    "name": {
+                        "description": "Product name",
+                        "type": "string"
+                    },
+                    "price": {
+                        "description": "Product price",
+                        "type": "number",
+                        "format": "float",
+                        "default": 487.65
+                    },
+                    "description": {
+                        "description": "Product description",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "StoreUserRequest": {
+                "title": "User",
+                "description": "Crud user",
+                "properties": {
+                    "name": {
+                        "description": "user name",
+                        "type": "string"
+                    },
+                    "email": {
+                        "description": "User email",
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "password": {
+                        "description": "User password",
+                        "type": "string",
+                        "format": "password"
+                    }
+                },
+                "type": "object"
+            },
             "ApiPaginatorResponse": {
                 "title": "Api paginator response",
                 "description": "Api paginator response",
                 "properties": {
                     "total": {
                         "description": "Data total in Database",
-                        "type": "integer"
+                        "type": "integer",
+                        "default": 50
                     },
                     "per_page": {
                         "description": "Total of data per page",
-                        "type": "integer"
+                        "type": "integer",
+                        "default": 15
                     },
                     "current_page": {
                         "description": "Current page number",
-                        "type": "integer"
+                        "type": "integer",
+                        "default": 1
                     },
                     "last_page": {
                         "description": "Last page number number",
-                        "type": "integer"
+                        "type": "integer",
+                        "default": 4
                     },
                     "first_page_url": {
                         "description": "Url of the first page",
-                        "type": "string"
+                        "type": "string",
+                        "default": "http://laravel.app?page=1"
                     },
                     "last_page_url": {
                         "description": "Url of the last page",
-                        "type": "string"
+                        "type": "string",
+                        "default": "http://laravel.app?page=4"
                     },
                     "next_page_url": {
                         "description": "Url of the next page",
-                        "type": "string"
+                        "type": "string",
+                        "default": "http://laravel.app?page=2"
                     },
                     "prev_page_url": {
                         "description": "Url of the previous page",
-                        "type": "string"
+                        "type": "string",
+                        "default": null
                     },
                     "path": {
                         "description": "App path",
-                        "type": "string"
+                        "type": "string",
+                        "default": "http://laravel.app"
                     },
                     "from": {
                         "description": "From number",
-                        "type": "integer"
+                        "type": "integer",
+                        "default": 1
                     },
                     "to": {
                         "description": "To number",
-                        "type": "integer"
+                        "type": "integer",
+                        "default": 15
                     }
                 },
                 "type": "object"
@@ -265,7 +661,8 @@
                 "properties": {
                     "code": {
                         "description": "Status code",
-                        "type": "integer"
+                        "type": "integer",
+                        "default": 200
                     },
                     "type": {
                         "description": "Response type",
@@ -273,7 +670,28 @@
                     },
                     "message": {
                         "description": "Reponse message",
-                        "type": "string"
+                        "type": "string",
+                        "default": "API message response"
+                    }
+                },
+                "type": "object"
+            },
+            "LoginResponse": {
+                "title": "Login response",
+                "description": "Login response",
+                "properties": {
+                    "access_token": {
+                        "description": "Token",
+                        "type": "string",
+                        "default": "1|tYfXgGERi0gcGH7Vdu6TYdWdijCCdrdPjY6jGBphAnwx"
+                    },
+                    "token_type": {
+                        "description": "Token type",
+                        "type": "string",
+                        "default": "bearer"
+                    },
+                    "user": {
+                        "$ref": "#/components/schemas/User"
                     }
                 },
                 "type": "object"
@@ -294,7 +712,8 @@
                     "price": {
                         "description": "Product price",
                         "type": "number",
-                        "format": "float"
+                        "format": "float",
+                        "default": 451.45
                     },
                     "description": {
                         "description": "Product description",
@@ -303,13 +722,34 @@
                 },
                 "type": "object"
             },
+            "ProductList": {
+                "title": "ProductList",
+                "description": "ProductList",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/ApiPaginatorResponse"
+                    },
+                    {
+                        "properties": {
+                            "data": {
+                                "description": "Product list",
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/Product"
+                                }
+                            }
+                        }
+                    }
+                ]
+            },
             "User": {
                 "title": "User model",
                 "description": "User model",
                 "properties": {
                     "id": {
                         "description": "User ID",
-                        "type": "string"
+                        "type": "string",
+                        "default": 48
                     },
                     "name": {
                         "description": "user name",

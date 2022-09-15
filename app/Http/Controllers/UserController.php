@@ -15,7 +15,7 @@ class UserController extends Controller
      *     path="/users",
      *     tags={"Users"},
      *     summary="Get user list",
-     *     operationId="index",
+     *     operationId="listUser",
      *     @OA\Parameter(
      *         name="page",
      *         in="query",
@@ -85,11 +85,11 @@ class UserController extends Controller
      *     path="/users",
      *     tags={"Users"},
      *     summary="Create a user",
-     *     operationId="store",
+     *     operationId="saveUser",
      *     @OA\RequestBody(
      *         description="Create user object",
      *         required=true,
-     *         @OA\JsonContent(ref="#/components/schemas/User")
+     *         @OA\JsonContent(ref="#/components/schemas/StoreUserRequest")
      *     ),
      *     @OA\Response(
      *         response=200,
@@ -110,10 +110,26 @@ class UserController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @OA\Get(
+     *     path="/users/{userId}",
+     *     tags={"Users"},
+     *     summary="Get a user",
+     *     operationId="getUser",
+     *     @OA\Parameter(
+     *         name="userId",
+     *         in="path",
+     *         description="User id to be showned",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(ref="#/components/schemas/User")
+     *     )
+     * )
      */
     public function show($id)
     {
@@ -129,7 +145,7 @@ class UserController extends Controller
      *     path="/users/{userId}",
      *     tags={"Users"},
      *     summary="Update a user",
-     *     operationId="update",
+     *     operationId="updateUser",
      *     @OA\Parameter(
      *         name="userId",
      *         in="path",
@@ -140,13 +156,13 @@ class UserController extends Controller
      *         )
      *     ),
      *     @OA\RequestBody(
-     *         description="Create user object",
+     *         description="Update user object",
      *         required=true,
      *         @OA\JsonContent(ref="#/components/schemas/User")
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="User created successfully",
+     *         description="Product updated successfully",
      *         @OA\JsonContent(ref="#/components/schemas/User")
      *     )
      * )
@@ -180,11 +196,11 @@ class UserController extends Controller
      *     path="/users/{userId}",
      *     tags={"Users"},
      *     summary="Delete a user",
-     *     operationId="destroy",
+     *     operationId="deleteUser",
      *     @OA\Parameter(
      *         name="userId",
      *         in="path",
-     *         description="User id to be updated",
+     *         description="User id to be deleted",
      *         required=true,
      *         @OA\Schema(
      *             type="string"
@@ -215,7 +231,7 @@ class UserController extends Controller
      *     path="/users/delete",
      *     tags={"Users"},
      *     summary="Delete multiples users",
-     *     operationId="destroyAll",
+     *     operationId="deleteAllUsers",
      *     @OA\Response(
      *         response=200,
      *         description="Users deleted successfully",

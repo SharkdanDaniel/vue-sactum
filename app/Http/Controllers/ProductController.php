@@ -10,10 +10,64 @@ use Illuminate\Support\Facades\DB;
 class ProductController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @OA\Get(
+     *     path="/products",
+     *     tags={"Products"},
+     *     summary="Get product list",
+     *     operationId="listProduct",
+     *     @OA\Parameter(
+     *         name="page",
+     *         in="query",
+     *         description="Current page",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="per_page",
+     *         in="query",
+     *         description="Number of the data per page",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="order_by",
+     *         in="query",
+     *         description="Field to be ordered",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="sort",
+     *         in="query",
+     *         description="Asc or Desc",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="search",
+     *         in="query",
+     *         description="Filter the data",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(ref="#/components/schemas/ProductList")
+     *     )
+     * )
      */
+
     public function index(Request $request)
     {
         $products = Product::where(function ($query) use ($request) {
@@ -27,11 +81,24 @@ class ProductController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreProductRequest  $request
-     * @return \Illuminate\Http\Response
+     * @OA\Post(
+     *     path="/products",
+     *     tags={"Products"},
+     *     summary="Create a product",
+     *     operationId="createProduct",
+     *     @OA\RequestBody(
+     *         description="Create product object",
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/StoreProductRequest")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Product created successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/Product")
+     *     )
+     * )
      */
+
     public function store(StoreProductRequest $request)
     {
         $input = $request->validated();
@@ -44,10 +111,26 @@ class ProductController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
+     * @OA\Get(
+     *     path="/products/{productId}",
+     *     tags={"Products"},
+     *     summary="Get a product",
+     *     operationId="getProduct",
+     *     @OA\Parameter(
+     *         name="productId",
+     *         in="path",
+     *         description="Product id to be showned",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(ref="#/components/schemas/Product")
+     *     )
+     * )
      */
     public function show(Product $product)
     {
@@ -55,11 +138,31 @@ class ProductController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateProductRequest  $request
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
+     * @OA\Put(
+     *     path="/products/{productId}",
+     *     tags={"Products"},
+     *     summary="Update a product",
+     *     operationId="updateProduct",
+     *     @OA\Parameter(
+     *         name="productId",
+     *         in="path",
+     *         description="Product id to be updated",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\RequestBody(
+     *         description="Update product object",
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/Product")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Product updated successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/Product")
+     *     )
+     * )
      */
     public function update(StoreProductRequest $request, Product $product)
     {
@@ -72,10 +175,26 @@ class ProductController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
+     * @OA\Delete(
+     *     path="/products/{productId}",
+     *     tags={"Products"},
+     *     summary="Delete a product",
+     *     operationId="deleteProduct",
+     *     @OA\Parameter(
+     *         name="productId",
+     *         in="path",
+     *         description="Product id to be deleted",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Product deleted successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/ApiResponse")
+     *     )
+     * )
      */
     public function destroy(Product $product)
     {
@@ -84,10 +203,17 @@ class ProductController extends Controller
     }
 
     /**
-     * Remove multiple resources from storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @OA\Patch(
+     *     path="/products/delete",
+     *     tags={"Products"},
+     *     summary="Delete multiples products",
+     *     operationId="deleteAllProducts",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Products deleted successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/ApiResponse")
+     *     )
+     * )
      */
     public function destroyAll(Request $request)
     {

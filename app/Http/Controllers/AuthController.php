@@ -16,9 +16,22 @@ class AuthController extends Controller
     }
 
     /**
-     * Get a sanctum token via given credentials.
-     *
-     * @return \Illuminate\Http\JsonResponse
+     * @OA\Post(
+     *     path="/login",
+     *     tags={"Auth"},
+     *     summary="Login",
+     *     operationId="login",
+     *     @OA\RequestBody(
+     *         description="Login object",
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/LoginRequest")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Logged in successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/LoginResponse")
+     *     )
+     * )
      */
     public function login(LoginRequest $request)
     {
@@ -37,6 +50,7 @@ class AuthController extends Controller
             'token_type' => 'bearer',
             // 'expires_in' => auth()->expiration(),
             'user' => [
+                'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
             ]
@@ -44,9 +58,17 @@ class AuthController extends Controller
     }
 
     /**
-     * Log the user out (Invalidate the token).
-     *
-     * @return \Illuminate\Http\JsonResponse
+     * @OA\Post(
+     *     path="/logout",
+     *     tags={"Auth"},
+     *     summary="Logout",
+     *     operationId="logout",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Logged off successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/ApiResponse")
+     *     )
+     * )
      */
     public function logout()
     {
@@ -55,9 +77,17 @@ class AuthController extends Controller
     }
 
     /**
-     * Get the authenticated User.
-     *
-     * @return \Illuminate\Http\JsonResponse
+     * @OA\Get(
+     *     path="/auth/user",
+     *     tags={"Auth"},
+     *     summary="Get auth user",
+     *     operationId="authUser",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(ref="#/components/schemas/User")
+     *     )
+     * )
      */
     public function authUser()
     {

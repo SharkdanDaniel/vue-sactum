@@ -1,8 +1,23 @@
 <?php
 
+/**
+ * @license Apache 2.0
+ */
+
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+
+/**
+ * Class StoreUserRequest.
+ *
+ * @author <admin@admin.com>
+ *
+ * @OA\Schema(
+ *     description="Crud user",
+ *     title="User"
+ * )
+ */
 
 class StoreUserRequest extends FormRequest
 {
@@ -52,4 +67,33 @@ class StoreUserRequest extends FormRequest
             'password.min' => 'Mínimo 8 caracteres',
         ];
     }
+
+    /**
+     * @OA\Property(
+     *     description="user name",
+     * )
+     *
+     * @var string
+     */
+    private $name;
+
+    /**
+     * @OA\Property(
+     *     format="email",
+     *     description="User email",
+     * )
+     *
+     * @var string
+     */
+    private $email;
+
+    /**
+     * @OA\Property(
+     *     format="password",
+     *     description="User password",
+     * )
+     *
+     * @var string
+     */
+    private $password;
 }

@@ -52,6 +52,7 @@ class Product extends Model
     /**
      * @OA\Property(
      *     description="Product price",
+     *     default=451.45
      * )
      *
      * @var float

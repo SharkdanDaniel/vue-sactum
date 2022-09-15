@@ -1,8 +1,23 @@
 <?php
 
+/**
+ * @license Apache 2.0
+ */
+
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+
+/**
+ * Class LoginRequest.
+ *
+ * @author <admin@admin.com>
+ *
+ * @OA\Schema(
+ *     description="Login request",
+ *     title="Login"
+ * )
+ */
 
 class LoginRequest extends FormRequest
 {
@@ -38,4 +53,24 @@ class LoginRequest extends FormRequest
             'password.string' => 'Deve ser texto',
         ];
     }
+
+    /**
+     * @OA\Property(
+     *     format="email",
+     *     description="Autentication email",
+     * )
+     *
+     * @var string
+     */
+    private $email;
+
+    /**
+     * @OA\Property(
+     *     format="password",
+     *     description="Autentication password",
+     * )
+     *
+     * @var string
+     */
+    private $password;
 }

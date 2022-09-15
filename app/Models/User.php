@@ -70,6 +70,7 @@ class User extends Authenticatable
     /**
      * @OA\Property(
      *     description="User ID",
+     *     default=48
      * )
      *
      * @var string

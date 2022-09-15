@@ -21,6 +21,7 @@ class ApiResponse
     /**
      * @OA\Property(
      *     description="Status code",
+     *     default=200
      * )
      *
      * @var int
@@ -39,6 +40,7 @@ class ApiResponse
     /**
      * @OA\Property(
      *     description="Reponse message",
+     *     default="API message response"
      * )
      *
      * @var string

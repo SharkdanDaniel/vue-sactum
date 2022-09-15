@@ -1,8 +1,23 @@
 <?php
 
+/**
+ * @license Apache 2.0
+ */
+
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+
+/**
+ * Class StoreProductRequest.
+ *
+ * @author <admin@admin.com>
+ *
+ * @OA\Schema(
+ *     description="Crud product",
+ *     title="Product"
+ * )
+ */
 
 class StoreProductRequest extends FormRequest
 {
@@ -47,4 +62,32 @@ class StoreProductRequest extends FormRequest
             'description.max' => 'Máximo 200 caracteres',
         ];
     }
+
+    /**
+     * @OA\Property(
+     *     description="Product name",
+     * )
+     *
+     * @var string
+     */
+    private $name;
+
+    /**
+     * @OA\Property(
+     *     description="Product price",
+     *     default=487.65
+     * )
+     *
+     * @var float
+     */
+    private $price;
+
+    /**
+     * @OA\Property(
+     *     description="Product description",
+     * )
+     *
+     * @var string
+     */
+    private $description;
 }
