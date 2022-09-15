@@ -13,7 +13,7 @@
         "version": "1.0.0"
     },
     "paths": {
-        "/login": {
+        "/api/login": {
             "post": {
                 "tags": [
                     "Auth"
@@ -45,7 +45,7 @@
                 }
             }
         },
-        "/logout": {
+        "/api/logout": {
             "post": {
                 "tags": [
                     "Auth"
@@ -66,12 +66,12 @@
                 }
             }
         },
-        "/auth/user": {
+        "/api/auth/user": {
             "get": {
                 "tags": [
                     "Auth"
                 ],
-                "summary": "Auth user",
+                "summary": "Get auth user",
                 "operationId": "authUser",
                 "responses": {
                     "200": {
@@ -87,7 +87,7 @@
                 }
             }
         },
-        "/products": {
+        "/api/products": {
             "get": {
                 "tags": [
                     "Products"
@@ -185,7 +185,7 @@
                 }
             }
         },
-        "/products/{productId}": {
+        "/api/products/{productId}": {
             "get": {
                 "tags": [
                     "Products"
@@ -288,7 +288,7 @@
                 }
             }
         },
-        "/products/delete": {
+        "/api/products/delete": {
             "patch": {
                 "tags": [
                     "Products"
@@ -309,7 +309,7 @@
                 }
             }
         },
-        "/users": {
+        "/api/users": {
             "get": {
                 "tags": [
                     "Users"
@@ -407,7 +407,7 @@
                 }
             }
         },
-        "/users/{userId}": {
+        "/api/users/{userId}": {
             "get": {
                 "tags": [
                     "Users"
@@ -510,7 +510,7 @@
                 }
             }
         },
-        "/users/delete": {
+        "/api/users/delete": {
             "patch": {
                 "tags": [
                     "Users"

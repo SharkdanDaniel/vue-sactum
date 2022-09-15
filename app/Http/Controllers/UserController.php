@@ -12,7 +12,7 @@ class UserController extends Controller
 {
     /**
      * @OA\Get(
-     *     path="/users",
+     *     path="/api/users",
      *     tags={"Users"},
      *     summary="Get user list",
      *     operationId="listUser",
@@ -82,7 +82,7 @@ class UserController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/users",
+     *     path="/api/users",
      *     tags={"Users"},
      *     summary="Create a user",
      *     operationId="saveUser",
@@ -111,7 +111,7 @@ class UserController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/users/{userId}",
+     *     path="/api/users/{userId}",
      *     tags={"Users"},
      *     summary="Get a user",
      *     operationId="getUser",
@@ -142,7 +142,7 @@ class UserController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/users/{userId}",
+     *     path="/api/users/{userId}",
      *     tags={"Users"},
      *     summary="Update a user",
      *     operationId="updateUser",
@@ -193,7 +193,7 @@ class UserController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/users/{userId}",
+     *     path="/api/users/{userId}",
      *     tags={"Users"},
      *     summary="Delete a user",
      *     operationId="deleteUser",
@@ -228,7 +228,7 @@ class UserController extends Controller
 
     /**
      * @OA\Patch(
-     *     path="/users/delete",
+     *     path="/api/users/delete",
      *     tags={"Users"},
      *     summary="Delete multiples users",
      *     operationId="deleteAllUsers",
