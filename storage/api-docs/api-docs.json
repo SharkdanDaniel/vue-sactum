@@ -707,7 +707,8 @@
                     },
                     "name": {
                         "description": "Product name",
-                        "type": "string"
+                        "type": "string",
+                        "format": "uuid"
                     },
                     "price": {
                         "description": "Product price",
@@ -782,6 +783,14 @@
                         }
                     }
                 ]
+            }
+        },
+        "securitySchemes": {
+            "api_key": {
+                "type": "apiKey",
+                "description": "Example: Bearer 1|tYfXgGERi0gcGH7Vdu6TYdWdijCCdrdPjY6jGBphAnwx",
+                "in": "header",
+                "bearerFormat": "1|tYfXgGERi0gcGH7Vdu6TYdWdijCCdrdPjY6jGBphAnwx"
             }
         }
     }

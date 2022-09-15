@@ -43,6 +43,7 @@ class Product extends Model
     /**
      * @OA\Property(
      *     description="Product name",
+     *     format="uuid"
      * )
      *
      * @var string
