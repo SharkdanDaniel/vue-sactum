@@ -13,7 +13,7 @@ export const getUsers = (
     search?: string,
 ) => {
     return api.get<GetResponseProps<UserProps>>(
-        `users?page=${e.page}&per_page=${e.rowsPerPage}&orderBy=${e.sortBy ?? 'updated_at'
+        `users?page=${e.page}&per_page=${e.rowsPerPage}&order_by=${e.sortBy ?? 'updated_at'
         }&sort=${e.descending ? 'desc' : 'asc'}${search ? '&search=' + search : ''
         }`,
     )

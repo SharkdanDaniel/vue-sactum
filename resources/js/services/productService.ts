@@ -13,7 +13,7 @@ export const getProducts = (
     search?: string,
 ) => {
     return api.get<GetResponseProps<ProductProps>>(
-        `products?page=${e.page}&per_page=${e.rowsPerPage}&orderBy=${e.sortBy ?? 'updated_at'
+        `products?page=${e.page}&per_page=${e.rowsPerPage}&order_by=${e.sortBy ?? 'updated_at'
         }&sort=${e.descending ? 'desc' : 'asc'}${search ? '&search=' + search : ''
         }`,
     )

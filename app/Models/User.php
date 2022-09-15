@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @license Apache 2.0
+ */
+
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -10,6 +14,15 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
+
+/**
+ * Class User.
+ *
+ * @OA\Schema(
+ *     title="User model",
+ *     description="User model",
+ * )
+ */
 
 class User extends Authenticatable
 {
@@ -53,4 +66,32 @@ class User extends Authenticatable
         //     Auth::check() ? $builder->where('email', '<>', 'admin@admin.com') : null;
         // });
     }
+
+    /**
+     * @OA\Property(
+     *     description="User ID",
+     * )
+     *
+     * @var string
+     */
+    private $id;
+
+    /**
+     * @OA\Property(
+     *     description="user name",
+     * )
+     *
+     * @var string
+     */
+    private $name;
+
+    /**
+     * @OA\Property(
+     *     format="email",
+     *     description="User email",
+     * )
+     *
+     * @var string
+     */
+    private $email;
 }

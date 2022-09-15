@@ -11,27 +11,92 @@ use Illuminate\Support\Facades\DB;
 class UserController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @OA\Get(
+     *     path="/users",
+     *     tags={"Users"},
+     *     summary="Get user list",
+     *     operationId="index",
+     *     @OA\Parameter(
+     *         name="page",
+     *         in="query",
+     *         description="Current page",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="per_page",
+     *         in="query",
+     *         description="Number of the data per page",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="order_by",
+     *         in="query",
+     *         description="Field to be ordered",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="sort",
+     *         in="query",
+     *         description="Asc or Desc",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="search",
+     *         in="query",
+     *         description="Filter the data",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(ref="#/components/schemas/UserList")
+     *     )
+     * )
      */
     public function index(Request $request)
     {
         $users = User::where('email', '<>', 'admin@admin.com')
             ->where(function ($query) use ($request) {
-                $query->where('name', 'like', '%' . str_replace(' ', '%', $request->input(key:'search')) . '%')
-                    ->orWhere('email', 'like', '%' . str_replace(' ', '%', $request->input(key:'search')) . '%');
+                $query->where('name', 'like', '%' . str_replace(' ', '%', $request->input(key: 'search')) . '%')
+                    ->orWhere('email', 'like', '%' . str_replace(' ', '%', $request->input(key: 'search')) . '%');
             })
-            ->orderBy($request->input(key:'orderBy'), $request->input(key:'sort'))
-            ->paginate($request->input(key:'per_page'));
+            ->orderBy($request->input(key: 'orderBy'), $request->input(key: 'sort'))
+            ->paginate($request->input(key: 'per_page'));
         return response()->json($users);
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @OA\Post(
+     *     path="/users",
+     *     tags={"Users"},
+     *     summary="Create a user",
+     *     operationId="store",
+     *     @OA\RequestBody(
+     *         description="Create user object",
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/User")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="User created successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/User")
+     *     )
+     * )
      */
     public function store(StoreUserRequest $request)
     {
@@ -60,11 +125,31 @@ class UserController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @OA\Put(
+     *     path="/users/{userId}",
+     *     tags={"Users"},
+     *     summary="Update a user",
+     *     operationId="update",
+     *     @OA\Parameter(
+     *         name="userId",
+     *         in="path",
+     *         description="User id to be updated",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\RequestBody(
+     *         description="Create user object",
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/User")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="User created successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/User")
+     *     )
+     * )
      */
     public function update(UpdateUserRequest $request, $id)
     {
@@ -91,14 +176,30 @@ class UserController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @OA\Delete(
+     *     path="/users/{userId}",
+     *     tags={"Users"},
+     *     summary="Delete a user",
+     *     operationId="destroy",
+     *     @OA\Parameter(
+     *         name="userId",
+     *         in="path",
+     *         description="User id to be updated",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="User deleted successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/ApiResponse")
+     *     )
+     * )
      */
-    public function destroy(Request $request, $id)
+    public function destroy($id)
     {
-        
+
         $user = User::where([['id', $id], ['email', '<>', 'admin@admin.com']]);
         if (!$user->exists()) {
             return response()->json(['User not found'], 404);
@@ -110,10 +211,17 @@ class UserController extends Controller
     }
 
     /**
-     * Remove multiple resources from storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @OA\Patch(
+     *     path="/users/delete",
+     *     tags={"Users"},
+     *     summary="Delete multiples users",
+     *     operationId="destroyAll",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Users deleted successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/ApiResponse")
+     *     )
+     * )
      */
     public function destroyAll(Request $request)
     {
@@ -123,6 +231,6 @@ class UserController extends Controller
                 User::where([['id', $user['id']], ['email', '<>', 'admin@admin.com']])->delete();
             }
         });
-        return response()->json(['message' => 'Users deleted successfully']);        
+        return response()->json(['message' => 'Users deleted successfully']);
     }
 }

@@ -1,0 +1,348 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Laravue API",
+        "description": "L5 Swagger OpenApi description",
+        "contact": {
+            "email": "email@email.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/users": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get user list",
+                "operationId": "index",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Current page",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Number of the data per page",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "order_by",
+                        "in": "query",
+                        "description": "Field to be ordered",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Asc or Desc",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Filter the data",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserList"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Create a user",
+                "operationId": "store",
+                "requestBody": {
+                    "description": "Create user object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{userId}": {
+            "put": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Update a user",
+                "operationId": "update",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "description": "User id to be updated",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Create user object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Delete a user",
+                "operationId": "destroy",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "description": "User id to be updated",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/delete": {
+            "patch": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Delete multiples users",
+                "operationId": "destroyAll",
+                "responses": {
+                    "200": {
+                        "description": "Users deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "ApiPaginatorResponse": {
+                "title": "Api paginator response",
+                "description": "Api paginator response",
+                "properties": {
+                    "total": {
+                        "description": "Data total in Database",
+                        "type": "integer"
+                    },
+                    "per_page": {
+                        "description": "Total of data per page",
+                        "type": "integer"
+                    },
+                    "current_page": {
+                        "description": "Current page number",
+                        "type": "integer"
+                    },
+                    "last_page": {
+                        "description": "Last page number number",
+                        "type": "integer"
+                    },
+                    "first_page_url": {
+                        "description": "Url of the first page",
+                        "type": "string"
+                    },
+                    "last_page_url": {
+                        "description": "Url of the last page",
+                        "type": "string"
+                    },
+                    "next_page_url": {
+                        "description": "Url of the next page",
+                        "type": "string"
+                    },
+                    "prev_page_url": {
+                        "description": "Url of the previous page",
+                        "type": "string"
+                    },
+                    "path": {
+                        "description": "App path",
+                        "type": "string"
+                    },
+                    "from": {
+                        "description": "From number",
+                        "type": "integer"
+                    },
+                    "to": {
+                        "description": "To number",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "ApiResponse": {
+                "title": "Api response",
+                "description": "Api response",
+                "properties": {
+                    "code": {
+                        "description": "Status code",
+                        "type": "integer"
+                    },
+                    "type": {
+                        "description": "Response type",
+                        "type": "string"
+                    },
+                    "message": {
+                        "description": "Reponse message",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "Product": {
+                "title": "Product model",
+                "description": "Product model",
+                "properties": {
+                    "id": {
+                        "description": "Product ID",
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "name": {
+                        "description": "Product name",
+                        "type": "string"
+                    },
+                    "price": {
+                        "description": "Product price",
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "description": {
+                        "description": "Product description",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "User": {
+                "title": "User model",
+                "description": "User model",
+                "properties": {
+                    "id": {
+                        "description": "User ID",
+                        "type": "string"
+                    },
+                    "name": {
+                        "description": "user name",
+                        "type": "string"
+                    },
+                    "email": {
+                        "description": "User email",
+                        "type": "string",
+                        "format": "email"
+                    }
+                },
+                "type": "object"
+            },
+            "UserList": {
+                "title": "UserList",
+                "description": "UserList",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/ApiPaginatorResponse"
+                    },
+                    {
+                        "properties": {
+                            "data": {
+                                "description": "User list",
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}
