@@ -75,7 +75,7 @@ class ProductController extends Controller
                 ->orWhere('price', 'like', '%' . str_replace(' ', '%', $request->input(key:'search')) . '%')
                 ->orWhere('description', 'like', '%' . str_replace(' ', '%', $request->input(key:'search')) . '%');
         })
-            ->orderBy($request->input(key:'orderBy'), $request->input(key:'sort'))
+            ->orderBy($request->input(key:'order_by'), $request->input(key:'sort'))
             ->paginate($request->input(key:'per_page'));
         return response()->json($products);
     }
