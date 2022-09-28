@@ -15,6 +15,7 @@ return new class extends Migration
     {
         DB::table('users')->insert([
             [
+                'id' => Str::uuid(),
                 'name' => 'Admin',
                 'email' => 'admin@admin.com',
                 'created_at' => now(),

@@ -87,6 +87,146 @@
                 }
             }
         },
+        "/api/avatars/{avatarId}": {
+            "get": {
+                "tags": [
+                    "Avatars"
+                ],
+                "summary": "Get an avatar",
+                "operationId": "getAvatar",
+                "parameters": [
+                    {
+                        "name": "avatarId",
+                        "in": "path",
+                        "description": "Avatar id to be shown",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Avatar"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Avatars"
+                ],
+                "summary": "Update an avatar",
+                "operationId": "updateAvatar",
+                "parameters": [
+                    {
+                        "name": "avatarId",
+                        "in": "path",
+                        "description": "Avatar id to be updated",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Update avatar image",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Avatar"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Avatar updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Avatar"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Avatars"
+                ],
+                "summary": "Delete an avatar",
+                "operationId": "deleteAvatar",
+                "parameters": [
+                    {
+                        "name": "avatarId",
+                        "in": "path",
+                        "description": "Avatar id to be deleted",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Avatar deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/avatars": {
+            "post": {
+                "tags": [
+                    "Avatars"
+                ],
+                "summary": "Create an avatar",
+                "operationId": "createAvatar",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "image": {
+                                        "description": "image to upload",
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Product created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Avatar"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/products": {
             "get": {
                 "tags": [
@@ -551,6 +691,16 @@
                 },
                 "type": "object"
             },
+            "StoreAvatarRequest": {
+                "title": "Avatar",
+                "description": "Crud avatar",
+                "properties": {
+                    "image": {
+                        "description": "Image"
+                    }
+                },
+                "type": "object"
+            },
             "StoreProductRequest": {
                 "title": "Product",
                 "description": "Crud product",
@@ -676,6 +826,35 @@
                 },
                 "type": "object"
             },
+            "Avatar": {
+                "title": "Avatar model",
+                "description": "Avatar model",
+                "properties": {
+                    "id": {
+                        "description": "Avatar ID",
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "user_id": {
+                        "description": "User ID",
+                        "type": "string",
+                        "default": 4
+                    },
+                    "file_name": {
+                        "description": "File name",
+                        "type": "string"
+                    },
+                    "media_type": {
+                        "description": "Media type",
+                        "type": "string"
+                    },
+                    "data": {
+                        "description": "Data base64",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
             "LoginResponse": {
                 "title": "Login response",
                 "description": "Login response",
@@ -750,7 +929,7 @@
                     "id": {
                         "description": "User ID",
                         "type": "string",
-                        "default": 48
+                        "format": "uuid"
                     },
                     "name": {
                         "description": "user name",

@@ -3,7 +3,7 @@
     <div :class="{ 'q-card q-pa-sm shadow-10' : $q.screen.gt.xs, 'bg-dark' : $q.screen.gt.xs && $q.dark.isActive }">
         <div :class="{ 'q-card__section q-card__section--vert' : $q.screen.gt.xs }">
             <div class="relative-position">
-                <LoadingContainer :loading="loading" />
+                <!-- <LoadingContainer :loading="loading" /> -->
                 <div class="row q-mb-lg">
                     <router-link to="users/create" class="col-12 col-md-3 q-mb-md">
                         <q-btn :outline="$q.screen.gt.xs" color="primary" class="full-width">
@@ -37,7 +37,7 @@
                     @onClickedEvent="onAction" 
                     @onPagination="onPagination"
                     @onMultipleSelection="onMultipleSelection" 
-                    :loading="paginationLoading" 
+                    :loading="loading" 
                 />
             </div>
         </div>
@@ -45,7 +45,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { computed, defineComponent, ref } from "vue";
 import Table from "../../../../components/Table.vue";
 import { UserProps } from "../../../../models/User.model";
 import { deleteAllUser, deleteUser, getUsers } from "../../../../services/userService";
@@ -58,6 +58,7 @@ import {
 } from "../../../../models/Table.model";
 import { GetResponseProps } from "../../../../models/GetResponse.model";
 import { useRouter } from "vue-router";
+import { useUserStore } from "../../../../store/user";
 
 export default defineComponent({
     name: "UserList",
@@ -67,9 +68,10 @@ export default defineComponent({
     },
     setup() {
         const $q = useQuasar();
+        const userStore = useUserStore();
         const $router = useRouter();
-        const users = ref<GetResponseProps<UserProps>>();
-        const loading = ref(false);
+        // const users = ref<GetResponseProps<UserProps>>();
+        // const loading = ref(false);
         const loadingSearch = ref(false);
         const paginationLoading = ref(false);
         const searchUser = ref("");
@@ -115,18 +117,20 @@ export default defineComponent({
                         paginationLoading.value = true;
                         break;                    
                     default:
-                        loading.value = true;
+                        // loading.value = true;
                         break;
                 }
                 if(search) loadingSearch.value = true;
-                users.value = (await getUsers(e, search))?.data;
+                const data = await userStore.getUsers(e, search);
+                userStore.setUsers(data);
+                // users.value = (await getUsers(e, search))?.data;
             } finally {
                 switch (loadingType) {
                     case 'paginationLoading':
                         paginationLoading.value = false;
                         break;                    
                     default:
-                        loading.value = false;
+                        // loading.value = false;
                         break;
                 }
                 if(search) loadingSearch.value = false;
@@ -135,7 +139,7 @@ export default defineComponent({
         const handleDeleteUser = async(data: any) => {
             try {
                 const count = data.length > 1 ? 's' : '';
-                loading.value = true;
+                // loading.value = true;
                 await data.length ? deleteAllUser(data) : deleteUser((data as any).id);
                 $q.notify({
                     type: 'positive',
@@ -145,7 +149,7 @@ export default defineComponent({
                 })
                 loadUsers(pagination.value);
             } finally {
-                loading.value = false;
+                // loading.value = false;
             }
         }
         const onAction = (e: any) => {
@@ -186,8 +190,8 @@ export default defineComponent({
             }).onOk(() => handleDeleteUser(data));
         };
         return {
-            users,
-            loading,
+            users: computed(() => userStore.data),
+            loading: computed(() => userStore.loading),
             pagination,
             paginationLoading,
             searchUser,

@@ -14,6 +14,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
+use App\Traits\UUID;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Class User.
@@ -26,7 +28,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, UUID;
 
     /**
      * The attributes that are mass assignable.
@@ -60,6 +62,18 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function avatar()
+    {
+        return $this->hasOne(Avatar::class);
+    }
+
+    // public function avatars()
+    // {
+    //     $avatar = Avatar::find('user_id', $this->id)->first();
+    //     if(!is_null($avatar)) $avatar['data'] = base64_encode(Storage::get($avatar['path']));
+    //     return $avatar;
+    // }
+
     protected static function booted() // exclui o admin das consultas
     {
         // static::addGlobalScope('exclude', function (Builder $builder) {
@@ -70,7 +84,7 @@ class User extends Authenticatable
     /**
      * @OA\Property(
      *     description="User ID",
-     *     default=48
+     *     format="uuid"
      * )
      *
      * @var string

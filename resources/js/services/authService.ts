@@ -27,6 +27,14 @@ export const getToken = (): string | null => {
     }
 }
 
+export const getAuthData = (): AuthResponseProps | null => {
+    try {
+        return JSON.parse(localStorage?.getItem('laravue@auth') as string);
+    } catch (error) {
+        return null;
+    }
+}
+
 export const removeAuth = (): void => {
     localStorage.removeItem('laravue@auth');
     router.push({ name: 'Login'});

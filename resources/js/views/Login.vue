@@ -52,6 +52,7 @@ import { useQuasar } from 'quasar';
 import { useRouter } from 'vue-router';
 import useVuelidate from '@vuelidate/core'
 import DarkToggle from '../components/DarkToggle.vue';
+import { useAuthStore } from '../store/auth';
 
 type FormProps = {
     email: string;
@@ -62,9 +63,9 @@ export default defineComponent({
     name: "LoginView",
     components: { DarkToggle },
     setup() {
+        const authStore = useAuthStore();
         const $q = useQuasar();
         const $router = useRouter();
-        const loading = ref(false);
         const form = ref<FormProps>({
             email: "",
             password: ""
@@ -82,21 +83,19 @@ export default defineComponent({
         const v$ = useVuelidate(rules, { form });
         const onSubmit = async () => {
             try {
-                loading.value = true;
-                const { data } = await onLogin(form.value);
-                setAuth(data);
+                await authStore.onLogin(form.value);
                 $router.push("/");
+            } catch(err) {
+                throw err;
             }
-            finally {
-                loading.value = false;
-            }
+            
         };
         return {
             form,
             v$,
             onSubmit,
-            loading,
-            getErrorMessage
+            getErrorMessage,
+            loading: computed(() => authStore.loading)
         };
     },
 })

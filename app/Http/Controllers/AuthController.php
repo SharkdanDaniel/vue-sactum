@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
+use App\Models\Avatar;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class AuthController extends Controller
 {
@@ -35,7 +37,8 @@ class AuthController extends Controller
      */
     public function login(LoginRequest $request)
     {
-        $input = $request->validated();
+        try {
+            $input = $request->validated();
         $credentials = [
             'email' => $input['email'],
             'password' => $input['password'],
@@ -55,6 +58,10 @@ class AuthController extends Controller
                 'email' => $user->email,
             ]
         ]);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+        
     }
 
     /**
@@ -91,6 +98,9 @@ class AuthController extends Controller
      */
     public function authUser()
     {
-        return response()->json(auth()->user());
+        $user = User::where('id', Auth::id())->with('avatar')->first();
+        $avatar = $user['avatar'];
+        if(!is_null($avatar)) $user['avatar']['data'] = getImageBase64($avatar['media_type'], $avatar['path']);
+        return response()->json($user);
     }
 }

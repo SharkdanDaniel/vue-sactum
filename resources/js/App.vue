@@ -5,9 +5,13 @@
 <script lang="ts">
 import { defineComponent, watch } from 'vue';
 import { useQuasar } from 'quasar'
+import { useAuthStore } from './store/auth';
+import { getAuthData, getAuthUser } from './services/authService';
 
 export default defineComponent({
     setup() {
+        const authStore = useAuthStore();
+        if(getAuthData()) authStore.setAuth(getAuthData() as any);
         const $q = useQuasar();
         let theme: 'dark' | 'light' = localStorage.getItem('laravue@theme') as any;
         if(!theme) {
