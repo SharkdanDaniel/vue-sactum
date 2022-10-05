@@ -2,7 +2,7 @@
     <q-dialog ref="dialogRef" @hide="onDialogHide">
         <q-card class="q-dialog-plugin">
             <LoadingContainer :loading="loading" />
-            <q-card-section class="sm:h-96 flex justify-center items-center">
+            <q-card-section class="card-section flex justify-center items-center">
                 <input hidden type="file" ref="avatarInput" @change="handleFileInput">
                 <vue-cropper
                     v-if="imgSrc"
@@ -17,7 +17,7 @@
                     @click="triggerFileInput"
                 >{{ imgSrc ? 'Alterar avatar' : 'Carregar avatar' }}</span>
             </q-card-section>
-            <q-card-actions align="right">
+            <q-card-actions class="mt-5" align="right">
                 <q-btn color="primary" label="Salvar" @click="onSave" />
                 <q-btn
                     :color="$q.dark.isActive ? 'secondary' : 'grey-3'"
@@ -67,6 +67,7 @@ export default defineComponent({
             vueCropperRef.value.getCroppedCanvas().toBlob((blob: any) => {
                 const formData = new FormData();
                 formData.append('image', blob);
+                if(isEditing.value) formData.append('_method', 'PUT');
                 const submitAvatar = async () => {
                     try {
                         loading.value = true;
@@ -101,3 +102,9 @@ export default defineComponent({
     },
 })
 </script>
+<style lang="scss">
+    .card-section {
+        min-height: 200px;
+        max-height: 50vh;
+    }
+</style>

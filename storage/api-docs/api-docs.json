@@ -118,7 +118,7 @@
                     }
                 }
             },
-            "put": {
+            "post": {
                 "tags": [
                     "Avatars"
                 ],
@@ -144,6 +144,11 @@
                                         "description": "image to upload",
                                         "type": "string",
                                         "format": "binary"
+                                    },
+                                    "_method": {
+                                        "description": "PUT method",
+                                        "type": "string",
+                                        "default": "PUT"
                                     }
                                 },
                                 "type": "object"

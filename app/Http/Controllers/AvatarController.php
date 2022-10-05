@@ -87,7 +87,7 @@ class AvatarController extends Controller
     }
 
     /**
-     * @OA\Put(
+     * @OA\Post(
      *     path="/api/avatars/{avatarId}",
      *     tags={"Avatars"},
      *     summary="Update an avatar",
@@ -111,6 +111,12 @@ class AvatarController extends Controller
      *                     type="string",
      *                     format="binary",
      *                 ),
+     *                 @OA\Property(
+     *                     description="PUT method",
+     *                     property="_method",
+     *                     type="string",
+     *                     default="PUT"
+     *                 ),
      *             ),
      *         )
      *      ),
@@ -121,18 +127,17 @@ class AvatarController extends Controller
      *     )
      * )
      */
-    public function update(Request $request, Avatar $avatar)
+    public function update(StoreAvatarRequest $request, Avatar $avatar)
     {
-        return response()->json($request->all());
-        // $request->validated();
-        // Storage::delete($avatar->path);
-        // $avatar->file_name = $request->file('image')->getClientOriginalName();
-        // $avatar->media_type = $request->file('image')->getClientMimeType();
-        // $avatar->path = $request->file('image')->store('public/images');
-        // $avatar->save();
-        // $data = base64_encode(Storage::get($avatar->path));
-        // if(!is_null($data)) $avatar->src = "data:$avatar->media_type;base64,$data";
-        // return response()->json($avatar);
+        $request->validated();
+        if(Storage::exists($avatar->path)) Storage::delete($avatar->path);
+        $avatar->file_name = $request->file('image')->getClientOriginalName();
+        $avatar->media_type = $request->file('image')->getClientMimeType();
+        $avatar->path = $request->file('image')->store('public/images');
+        $avatar->save();
+        $data = base64_encode(Storage::get($avatar->path));
+        if(!is_null($data)) $avatar->src = "data:$avatar->media_type;base64,$data";
+        return response()->json($avatar);
     }
 
     /**
@@ -160,7 +165,7 @@ class AvatarController extends Controller
     public function destroy(Avatar $avatar)
     {
         $avatar->delete();
-        Storage::delete($avatar->path);
+        if(Storage::exists($avatar->path)) Storage::delete($avatar->path);
         return response()->json(['message' => 'Avatar deleted successfully']);
     }
 }

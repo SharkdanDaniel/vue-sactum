@@ -39,7 +39,7 @@ class StoreAvatarRequest extends FormRequest
     public function rules()
     {
         return [
-            'image' => 'image|mimes:jpg,png,jpeg,gif,svg|required',
+            'image' => 'image|mimes:jpg,png,jpeg,gif,svg|max:5000|required',
         ];
     }
 
@@ -52,8 +52,10 @@ class StoreAvatarRequest extends FormRequest
     {
         return [
             'image.required' => 'Imagem é obrigatória',
-            'image' => 'Imagem deve ser do tipo image',
-            'mimes' => 'Extensões suportadas: jpg, png, jpeg, gif, svg',
+            'image.image' => 'Imagem deve ser do tipo image',
+            'image.mimes' => 'Extensões suportadas: jpg, png, jpeg, gif, svg',
+            'image.max' => 'Tamanho máximo suportado de 5 MB',
+            'image.uploaded' => 'Tamanho da image é muito grande!',
         ];
     }
 
