@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
-use App\Models\Avatar;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class AuthController extends Controller
@@ -39,29 +37,29 @@ class AuthController extends Controller
     {
         try {
             $input = $request->validated();
-        $credentials = [
-            'email' => $input['email'],
-            'password' => $input['password'],
-        ];
-        if (!auth()->attempt($credentials)) {
-            return response()->json(['message' => 'Invalid credentials'], 401);
-        }
-        $user = User::where('email', $credentials['email'])->first();
-        $token = $user->createToken($credentials['email']);
-        return response()->json([
-            'access_token' => $token->plainTextToken,
-            'token_type' => 'bearer',
-            // 'expires_in' => auth()->expiration(),
-            'user' => [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-            ]
-        ]);
-        } catch (\Throwable $th) {
+            $credentials = [
+                'email' => $input['email'],
+                'password' => $input['password'],
+            ];
+            if (!auth()->attempt($credentials)) {
+                return response()->json(['message' => 'Invalid credentials'], 401);
+            }
+            $user = User::where('email', $credentials['email'])->first();
+            $token = $user->createToken($credentials['email']);
+            return response()->json([
+                'access_token' => $token->plainTextToken,
+                'token_type' => 'bearer',
+                // 'expires_in' => auth()->expiration(),
+                'user' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                ],
+            ]);
+        } catch (\Throwable$th) {
             throw $th;
         }
-        
+
     }
 
     /**
@@ -100,7 +98,11 @@ class AuthController extends Controller
     {
         $user = User::where('id', Auth::id())->with('avatar')->first();
         $avatar = $user['avatar'];
-        if(!is_null($avatar)) $user['avatar']['data'] = getImageBase64($avatar['media_type'], $avatar['path']);
+        if (!is_null($avatar)) {
+            $media_type = $avatar['media_type'];
+            $data = base64_encode(Storage::get($avatar['path']));
+            if(!is_null($data)) $user['avatar']['src'] = "data:$media_type;base64,$data";
+        }
         return response()->json($user);
     }
 }

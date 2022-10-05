@@ -38,17 +38,17 @@ class UpdateUserRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => 'Obrigatório',
-            'name.string' => 'Deve ser texto',
-            'name.max' => 'Máximo 50 caracteres',
+            'name.required' => 'Nome é obrigatório',
+            'name.string' => 'Nome deve ser do tipo texto',
+            'name.max' => 'Nome: máximo 50 caracteres',
             'email.email' => 'Email inválido',
-            'email.string' => 'Deve ser texto',
-            'email.required' => 'Obrigatório',
+            'email.string' => 'Email deve ser do tipo texto',
+            'email.required' => 'Email é obrigatório',
             'email.unique' => 'Este email já existe',
-            'name.max' => 'Máximo 20 caracteres',
-            'password.string' => 'Deve ser texto',
-            'password.max' => 'Máximo 20 caracteres',
-            'password.min' => 'Mínimo 8 caracteres',
+            'name.max' => 'Nome: máximo 20 caracteres',
+            'password.string' => 'Senha deve ser do tipo texto',
+            'password.max' => 'Senha: máximo 20 caracteres',
+            'password.min' => 'Senha: mínimo 8 caracteres',
         ];
     }
 }

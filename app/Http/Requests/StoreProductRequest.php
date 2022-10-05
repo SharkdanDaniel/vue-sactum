@@ -53,13 +53,13 @@ class StoreProductRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => 'Obrigatório',
-            'name.string' => 'Deve ser texto',
-            'name.max' => 'Máximo 50 caracteres',
-            'price.numeric' => 'Deve ser número',
-            'price.required' => 'Obrigatório',
-            'description.string' => 'Deve ser texto',
-            'description.max' => 'Máximo 200 caracteres',
+            'name.required' => 'Nome é obrigatório',
+            'name.string' => 'Nome deve ser texto',
+            'name.max' => 'Nome: Máximo 50 caracteres',
+            'price.numeric' => 'Preço deve do tipo número',
+            'price.required' => 'Preço é obrigatório',
+            'description.string' => 'Descrição deve ser do tipo texto',
+            'description.max' => 'Descrição: máximo 200 caracteres',
         ];
     }
 

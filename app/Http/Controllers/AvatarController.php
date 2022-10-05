@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreAvatarRequest;
 use App\Models\Avatar;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class AvatarController extends Controller
@@ -72,16 +73,16 @@ class AvatarController extends Controller
 
     public function store(StoreAvatarRequest $request)
     {
-        $user = auth()->user();
         $request->validated();
-        $request->file('image')->get();
+        $user = auth()->user();
         $avatar = Avatar::create([
             'file_name' => $request->file('image')->getClientOriginalName(),
             'media_type' => $request->file('image')->getClientMimeType(),
             'path' => $request->file('image')->store('public/images'),
             'user_id' => $user['id'],
         ]);
-        $avatar->data = getImageBase64($avatar->media_type, $avatar->path);
+        $data = base64_encode(Storage::get($avatar->path));
+        if(!is_null($data)) $avatar->src = "data:$avatar->media_type;base64,$data";
         return response()->json($avatar);
     }
 
@@ -101,10 +102,18 @@ class AvatarController extends Controller
      *         )
      *     ),
      *     @OA\RequestBody(
-     *         description="Update avatar image",
-     *         required=true,
-     *         @OA\JsonContent(ref="#/components/schemas/Avatar")
-     *     ),
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                     description="image to upload",
+     *                     property="image",
+     *                     type="string",
+     *                     format="binary",
+     *                 ),
+     *             ),
+     *         )
+     *      ),
      *     @OA\Response(
      *         response=200,
      *         description="Avatar updated successfully",
@@ -112,15 +121,18 @@ class AvatarController extends Controller
      *     )
      * )
      */
-    public function update(StoreAvatarRequest $request, Avatar $avatar)
+    public function update(Request $request, Avatar $avatar)
     {
-        $request->validated();
-        $avatar->file_name = $request->file('image')->getClientOriginalName();
-        $avatar->media_type = $request->file('image')->getClientMimeType();
-        $avatar->path = $request->file('image')->store('public/images');
-        $avatar->save();
-        $avatar->data = getImageBase64($avatar->media_type, $avatar->path);
-        return response()->json($avatar);
+        return response()->json($request->all());
+        // $request->validated();
+        // Storage::delete($avatar->path);
+        // $avatar->file_name = $request->file('image')->getClientOriginalName();
+        // $avatar->media_type = $request->file('image')->getClientMimeType();
+        // $avatar->path = $request->file('image')->store('public/images');
+        // $avatar->save();
+        // $data = base64_encode(Storage::get($avatar->path));
+        // if(!is_null($data)) $avatar->src = "data:$avatar->media_type;base64,$data";
+        // return response()->json($avatar);
     }
 
     /**
@@ -148,6 +160,7 @@ class AvatarController extends Controller
     public function destroy(Avatar $avatar)
     {
         $avatar->delete();
+        Storage::delete($avatar->path);
         return response()->json(['message' => 'Avatar deleted successfully']);
     }
 }

@@ -47,10 +47,10 @@ class LoginRequest extends FormRequest
     public function messages()
     {
         return [
-            'email.required' => 'Obrigatório',
+            'email.required' => 'Email é Obrigatório',
             'email.email' => 'Email inválido',
-            'password.required' => 'Obrigatório',
-            'password.string' => 'Deve ser texto',
+            'password.required' => 'Senha é Obrigatória',
+            'password.string' => 'Senha deve ser texto',
         ];
     }
 

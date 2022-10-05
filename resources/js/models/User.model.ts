@@ -7,8 +7,7 @@ export interface UserProps extends BaseProps {
     avatar?: UserAvatarProps
 }
 
-export interface UserAvatarProps {
-    data: string;
+export interface UserAvatarProps extends BaseProps {
     file_name: string;
     media_type: string;
     user_id: string;

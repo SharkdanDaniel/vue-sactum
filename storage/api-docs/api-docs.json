@@ -136,12 +136,17 @@
                     }
                 ],
                 "requestBody": {
-                    "description": "Update avatar image",
-                    "required": true,
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
-                                "$ref": "#/components/schemas/Avatar"
+                                "properties": {
+                                    "image": {
+                                        "description": "image to upload",
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
                             }
                         }
                     }
@@ -838,7 +843,7 @@
                     "user_id": {
                         "description": "User ID",
                         "type": "string",
-                        "default": 4
+                        "format": "uuid"
                     },
                     "file_name": {
                         "description": "File name",
@@ -848,8 +853,8 @@
                         "description": "Media type",
                         "type": "string"
                     },
-                    "data": {
-                        "description": "Data base64",
+                    "src": {
+                        "description": "src in base64 format",
                         "type": "string"
                     }
                 },

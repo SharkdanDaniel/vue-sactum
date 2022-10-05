@@ -6,9 +6,9 @@
 
 namespace App\Models;
 
+use App\Traits\UUID;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Traits\UUID;
 
 /**
  * Class Avatar.
@@ -32,7 +32,7 @@ class Avatar extends Model
         'file_name',
         'media_type',
         'path',
-        'data',
+        'src',
         'user_id',
     ];
 
@@ -54,7 +54,7 @@ class Avatar extends Model
     /**
      * @OA\Property(
      *     description="User ID",
-     *     default=4
+     *     format="uuid"
      * )
      *
      * @var string
@@ -81,10 +81,10 @@ class Avatar extends Model
 
     /**
      * @OA\Property(
-     *     description="Data base64",
+     *     description="src in base64 format",
      * )
      *
      * @var string
      */
-    private $data;
+    private $src;
 }

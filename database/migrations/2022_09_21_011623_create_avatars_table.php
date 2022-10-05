@@ -17,7 +17,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('file_name');
             $table->string('media_type');
-            $table->string('data')->nullable();
+            $table->string('src')->nullable();
             $table->string('path');
             $table->uuid('user_id')->unique();
             $table->timestamps();

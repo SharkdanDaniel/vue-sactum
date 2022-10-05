@@ -5,6 +5,9 @@ import { Quasar, Notify, Dialog, QNotifyCreateOptions } from 'quasar';
 import { createPinia } from 'pinia'
 import quasarIconSet from 'quasar/icon-set/fontawesome-v6';
 
+// Import Vue Cropper
+import 'cropperjs/dist/cropper.css';
+
 // Import icon libraries
 import '@quasar/extras/roboto-font/roboto-font.css';
 import '@quasar/extras/fontawesome-v6/fontawesome-v6.css';

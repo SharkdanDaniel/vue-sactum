@@ -13,54 +13,54 @@
         <q-card-section v-else>
             <q-form @submit.prevent="onSubmit">
                 <div class="mb-5">
-                    <q-input 
-                        ref="inputRef" 
-                        type="text" 
-                        v-model="form.name" 
-                        label="Nome" 
-                        dense 
+                    <q-input
+                        ref="inputRef"
+                        type="text"
+                        v-model="form.name"
+                        label="Nome"
+                        dense
                         outlined
-                        :rules="[() => getErrorMessage(v$.form.name)]" 
+                        :rules="[() => getErrorMessage(v$.form.name)]"
                     />
                 </div>
                 <div class="mb-5">
-                    <q-input 
-                        ref="inputRef" type="email" 
-                        v-model="form.email" 
-                        label="Email" 
-                        dense 
+                    <q-input
+                        ref="inputRef" type="email"
+                        v-model="form.email"
+                        label="Email"
+                        dense
                         outlined
                         :rules="[() => getErrorMessage(v$.form.email)]"
                     />
                 </div>
                 <div class="mb-5">
-                    <q-input 
-                        ref="inputRef" 
-                        type="password" 
-                        v-model="form.password" 
-                        label="Senha" 
-                        dense 
+                    <q-input
+                        ref="inputRef"
+                        type="password"
+                        v-model="form.password"
+                        label="Senha"
+                        dense
                         outlined
-                        :rules="[() => getErrorMessage(v$.form.password)]" 
+                        :rules="[() => getErrorMessage(v$.form.password)]"
                     />
                 </div>
                 <q-card-actions class="q-pa-none" style="gap: 10px" :class="$q.screen.lt.sm ? 'column' : 'justify-end'">
                     <router-link to="../users" :class="{ 'full-width': $q.screen.lt.sm }">
-                        <q-btn 
-                            :disable="submitLoading" 
-                            type="button" 
-                            size="md" 
+                        <q-btn
+                            :disable="submitLoading"
+                            type="button"
+                            size="md"
                             :text-color="$q.dark.isActive ? 'white' : 'grey-10'"
                             :color="$q.dark.isActive ? 'secondary' : 'grey-1'"
-                            class="custom-btn" 
+                            class="custom-btn"
                             :class="{ 'full-width': $q.screen.lt.sm }"
                         >Voltar</q-btn>
                     </router-link>
-                    <q-btn 
-                        :loading="submitLoading" 
-                        type="submit" 
-                        size="md" 
-                        color="primary" 
+                    <q-btn
+                        :loading="submitLoading"
+                        type="submit"
+                        size="md"
+                        color="primary"
                         class="custom-btn"
                         :class="{ 'full-width': $q.screen.lt.sm }"
                     >Salvar</q-btn>
@@ -116,9 +116,6 @@ export default defineComponent({
                 loading.value = true
                 form.value = (await getUserById(id))?.data;
                 v$.value.form.$reset();
-                setTimeout(() => {
-                    console.log(v$.value.$commit)
-                }, 2000);
             } catch (error) {
                 throw error;
             } finally {
@@ -130,11 +127,11 @@ export default defineComponent({
                 submitLoading.value = true;
                 isEditing.value ? await updateUser(form.value) : await createUser(form.value);
                 $router.push('../users');
-                $q.notify({ 
-                    color: 'positive', 
+                $q.notify({
+                    color: 'positive',
                     message: `Usuário ${isEditing.value ? 'atualizado' : 'adicionado'} com sucesso!`,
                     position: window.innerWidth <= 600 ? 'top' : 'top-right',
-                    classes: window.innerWidth <= 600 ? 'full-width' : '', 
+                    classes: window.innerWidth <= 600 ? 'full-width' : '',
                 })
             } finally {
                 submitLoading.value = false;

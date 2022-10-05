@@ -51,9 +51,9 @@ class StoreAvatarRequest extends FormRequest
     public function messages()
     {
         return [
-            'image.required' => 'Obrigatório',
-            'image' => 'Deve ser do tipo imagem',
-            'mimes' => 'Extensões suportadas: jpg, png, jpeg, gif, svg'
+            'image.required' => 'Imagem é obrigatória',
+            'image' => 'Imagem deve ser do tipo image',
+            'mimes' => 'Extensões suportadas: jpg, png, jpeg, gif, svg',
         ];
     }
 
