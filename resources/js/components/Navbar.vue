@@ -4,12 +4,13 @@
             <q-btn flat @click="buttonClicked" round dense icon="fa-solid fa-bars" />
             <DarkToggle />
             <q-toolbar-title>{{ routerName }}</q-toolbar-title>
-            <q-avatar class="cursor-pointer bg-white">
+            <q-skeleton size="38px" v-if="loading" type="QAvatar" />
+            <q-avatar v-else class="cursor-pointer bg-white">
                 <img v-if="profile?.avatar?.src" :src="profile?.avatar?.src">
                 <img v-else src="@/assets/icons/avatar.svg">
                 <q-menu>
                     <q-list style="min-width: 100px">
-                        <q-item class="justify-center items-center flex-col" clickable v-close-popup @click="openAvatarDialog">
+                        <q-item class="justify-center items-center flex-col" clickable v-close-popup @click="openAvatarDialog">                            
                             <q-avatar class="cursor-pointer bg-white">
                                 <img v-if="profile?.avatar?.src" :src="profile?.avatar?.src">
                                 <img v-else src="@/assets/icons/avatar.svg">
@@ -50,6 +51,7 @@ export default defineComponent({
     setup() {
         const $q = useQuasar();
         const profile = ref<UserProps>();
+        const loading = ref(false);
         const openAvatarDialog = () => {
             $q.dialog({
                 component: AvatarDialog,
@@ -58,10 +60,13 @@ export default defineComponent({
         }
         const getAuth = async () => {
             try {
+                loading.value = true;
                 const { data } = await getAuthUser();
                 profile.value = data;
             }
-            finally { }
+            finally {
+                loading.value = false;                
+            }
         };
         const logout = async () => {
             await onLogout();
@@ -71,6 +76,7 @@ export default defineComponent({
         return {
             profile,
             logout,
+            loading,
             openAvatarDialog,
             routerName: computed(() => $route.name),
         };
